@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
     <title>Dashboard</title>
 </head>
 <body>
-    {{user}}
     <img src="{{user.profile_picture}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture">
-    <img src="{{url_for('static', filename='imgs/'+user.profile_image_file_name)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture">
-    
-    <a href="/preferences">Preferences</a>
+    <img src="{{url_for('static', filename='imgs/'+user.id|string+'/'+user.profile_image_file_name)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture" id='profile_image'>
+    <ul>
+        <a href="/preferences">Preferences</a>
+
+    </ul>
 </body>
 </html>

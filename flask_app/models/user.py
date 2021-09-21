@@ -227,9 +227,19 @@ class User():
 
     @staticmethod
     def insertImageToDB(data):
+
+        query = "SELECT id FROM images ORDER BY id DESC LIMIT 1"
+
+        last_image_id = MySQLConnection().query_db(query)
+
         #Stores profile_picture on disk and saves file path to db
-        data['file_path'] = "G:/My Drive/Coding_Dojo/Projects/WhatsForDinner/flask_app/static/imgs"
-        data['file_name'] = f"profile_picture_{data['first_name']}_{data['last_name']}_{data['id']}.png"
+        data['file_path'] = f"G:/My Drive/Coding_Dojo/Projects/WhatsForDinner/flask_app/static/imgs/{data['id']}"
+        try: 
+            os.mkdir(data['file_path']) 
+        except OSError as error: 
+            print(error)  
+
+        data['file_name'] = f"{data['id']}-{last_image_id[0]['id']+1}.png"
         data['profile_picture'].save(os.path.join(data['file_path'], data['file_name']))
         
         query = "INSERT INTO images(created_at, updated_at, owner_user_id, file_path, file_name) VALUES(NOW(), NOW(), %(id)s, %(file_path)s, %(file_name)s )"
