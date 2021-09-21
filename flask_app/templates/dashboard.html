@@ -8,11 +8,23 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <img src="{{user.profile_picture}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture">
-    <img src="{{url_for('static', filename='imgs/'+user.id|string+'/'+user.profile_image_file_name)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture" id='profile_image'>
+    <div id="profile_image_container">
+        <img src="{{url_for('static', filename=user.profile_image_file_path)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture" id='profile_image'>
+        <form action="/delete_photo" method='POST' id="delete_photo" class="hidden">
+            <input type="hidden" name='profile_image_id' value="{{user.profile_image_id}}">
+            <button id="delete_photo_button" type="submit">Delete Photo From our Records?</button>
+            <button id="cancel_button" type="button">Cancel</button>
+        </form>
+    </div>
     <ul>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/shopping_list">Shopping List</a>
+        <a href="/add_recipe">Add Recipe</a>
+        <a href="/recipes">Browse Recipes</a>
+        <a href="/record_meal">Record Meal</a>
+        <a href="/find_friends">Find Friends</a>
         <a href="/preferences">Preferences</a>
-
     </ul>
+    <script src="{{url_for('static', filename='js/dashboard.js')}}"></script>
 </body>
 </html>

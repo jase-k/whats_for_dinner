@@ -2,6 +2,7 @@ import re
 from flask_app import app
 from flask import render_template, redirect, request, session
 from flask_app.models.user import User
+import os
 
 
 @app.route('/register/newuser', methods=['POST'])
@@ -44,7 +45,14 @@ def loginInUser():
 @app.route('/dashboard')
 def displayUserDashboard():
     user = User.getUserById(session['user_id'])
-    print('Displaying Dashboard: ')
+    filepath, filename = os.path.split(user.profile_image_file_path)
+    filepath = os.path.relpath(filepath,  os.getcwd()+"/flask_app/static")
+    user.profile_image_file_path = os.path.join(filepath, filename).replace('\\', '/')
+
+    #Used to get os variables
+    # print(os.environ.get["HOME"])
+    print("Working directory from /dashboard", os.getcwd())
+
     return render_template('dashboard.html', user = user)
 
 @app.route('/users/update', methods=['POST'])
@@ -71,3 +79,4 @@ def showPreferences():
 def logout():
     session.clear()
     return redirect('/login')
+

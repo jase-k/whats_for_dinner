@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, session, jsonify, request
+from flask_app.models.image import Image
 import os
 import bcrypt
 import re
@@ -18,9 +19,11 @@ class User():
         self.menu_id = data['menu_id']
         self.shopping_list_id = data['shopping_list_id']
         self.profile_image_id = data['profile_image_id']
-        self.profile_image_file_path = data['file_path']
-        self.profile_image_file_name = data['file_name']
-    
+        if data['file_path']:
+            self.profile_image_file_path = data['file_path']
+        else: 
+            self.profile_image_file_path = os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png"
+        
     #prints user when print(User()) is called. 
     def __str__(self):
         return f"id: {self.id}, first_name: '{self.first_name}', last_name: '{self.last_name}', email: '{self.email}', phone: '{self.phone}', password: '{self.password}', created_at: {self.created_at}, upated_at: {self.updated_at}, menu_id: {self.menu_id}, shopping_list_id: {self.shopping_list_id}"
@@ -87,6 +90,8 @@ class User():
 #Gets user from database returns an Instance of User
     @classmethod
     def getUserById(cls, id):
+        
+        print("Working directory from models/user.py", os.getcwd())
         query = f"SELECT * FROM users LEFT JOIN images ON profile_image_id = images.id WHERE users.id = {id}"
 
         user_fromDB = MySQLConnection().query_db(query)
@@ -218,32 +223,10 @@ class User():
         #checks for validation
         is_valid = cls.validateUser(data)
 
-        data['profile_image_id'] = cls.insertImageToDB(data)
+        data['profile_image_id'] = Image.insertImageToDB(data)
 
         #Update user in database
         MySQLConnection().query_db(query, data)
 
         return is_valid
 
-    @staticmethod
-    def insertImageToDB(data):
-
-        query = "SELECT id FROM images ORDER BY id DESC LIMIT 1"
-
-        last_image_id = MySQLConnection().query_db(query)
-
-        #Stores profile_picture on disk and saves file path to db
-        data['file_path'] = f"G:/My Drive/Coding_Dojo/Projects/WhatsForDinner/flask_app/static/imgs/{data['id']}"
-        try: 
-            os.mkdir(data['file_path']) 
-        except OSError as error: 
-            print(error)  
-
-        data['file_name'] = f"{data['id']}-{last_image_id[0]['id']+1}.png"
-        data['profile_picture'].save(os.path.join(data['file_path'], data['file_name']))
-        
-        query = "INSERT INTO images(created_at, updated_at, owner_user_id, file_path, file_name) VALUES(NOW(), NOW(), %(id)s, %(file_path)s, %(file_name)s )"
-
-        id = MySQLConnection().query_db(query, data)
-
-        return id

@@ -1,5 +1,5 @@
 from flask_app import app
-from flask_app.controllers import mainpages, users
+from flask_app.controllers import mainpages, users, images
 
 
 if(__name__ == "__main__"):
