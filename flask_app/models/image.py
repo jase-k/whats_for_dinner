@@ -9,7 +9,7 @@ class Image:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.owner_user_id = data['owner_user_id']
-        self.file_path = data['file_path']
+        self.file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
 
     def deleteSelf(self):
         #Deletes from Disk

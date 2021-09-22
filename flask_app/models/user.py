@@ -19,7 +19,8 @@ class User():
         self.menu_id = data['menu_id']
         self.shopping_list_id = data['shopping_list_id']
         self.profile_image_id = data['profile_image_id']
-        if data['file_path']:
+        self.profile_image = []
+        if 'file_path' in data:
             #returns relative file path from static folder
             self.profile_image_file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
         else: 
@@ -102,10 +103,25 @@ class User():
         user_fromDB = MySQLConnection().query_db(query)
 
         if user_fromDB:
-            return cls(user_fromDB[0])
+            user = cls(user_fromDB[0])
+            photo = Image.getImageById(user_fromDB[0]['profile_image_id'])
+            
+            if photo:
+                user.profile_image.append(photo)
+            return user
         else:
             print("Could not find user from database!")
             return False
+    @classmethod
+    def getUserProfileById(cls, id):
+        user = cls.getUserById(id)
+        if not user.profile_image:
+            user.profile_image.append({
+                "file_path": os.path.relpath(os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png",  os.getcwd()+"/flask_app/static").replace('\\', '/')
+                
+            })
+        print("USER ", user)
+        return user
 
     @staticmethod
     def hashPW(password):

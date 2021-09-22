@@ -1,4 +1,39 @@
 {% extends 'dashboard.html' %}
 {% block content %}
-<h2>Recipe Name</h2>
+{% if user.id == recipe.creator[0].id %}
+<form action="/edit_recipe/{{recipe.id}}">
+    <button type='submit'> Edit? </button>
+</form>
+{% endif %}
+
+<h2>{{ recipe.title}}</h2>
+
+<!-- Get Nutient Facts Coming Soon! -->
+<fieldset>
+    <legend>Nutrition Facts</legend>
+    <p>Coming Soon!</p>
+</fieldset>
+<!-- Get Ingredient List -->
+
+
+<fieldset>
+    <legend>Description</legend>
+    <p>{{recipe.description}}</p>
+</fieldset>
+<!-- Created By -->
+<fieldset>
+    <legend>Created By:</legend>
+    <p>{{recipe.creator[0].first_name }} {{recipe.creator[0].last_name }}</p>
+    <img src='{{url_for("static", filename=""+recipe.creator[0].profile_image[0].file_path)}}' alt='{{recipe.creator[0].first_name }} {{recipe.creator[0].last_name }}"profile picture' class="profile_image">
+</fieldset>
+<!-- Get Recipe Details Facts -->
+<fieldset>
+    <legend>Instructions</legend>
+    <p>{{recipe.instructions}}</p>
+</fieldset>
+
+<h5>Leave Review?</h5>
+<h5>Ask a Question</h5>
+<h5>Add Photo</h5>
+<h5>Comments:</h5>
 {% endblock %}

@@ -49,7 +49,7 @@
     padding: 10px;
 }
 
-#profile_image{
+.profile_image{
     height: 60px;
     width: 60px;
     border-radius: 50%;

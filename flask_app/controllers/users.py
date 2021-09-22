@@ -47,9 +47,8 @@ def displayUserDashboard():
     if not 'user_id' in session:
         return redirect('/')
     
-    user = User.getUserById(session['user_id'])
-    #Used to get os variables
-    # print(os.environ.get["HOME"])
+    user = User.getUserProfileById(session['user_id'])
+
     print("Working directory from /dashboard", os.getcwd()+"/flask_app/static")
 
     return render_template('dashboard.html', user = user)
@@ -74,7 +73,7 @@ def updateUser():
 def showPreferences():
     if not 'user_id' in session:
         return redirect('/')
-    user = User.getUserById(session['user_id'])
+    user = User.getUserProfileById(session['user_id'])
 
     return render_template('preferences.html', user = user)
 
@@ -85,6 +84,6 @@ def logout():
 
 @app.route('/find_friends')
 def showFind_Friends():
-    user = User.getUserById(session['user_id'])
+    user = User.getUserProfileById(session['user_id'])
     return render_template('find_friends.html', user = user)
 
