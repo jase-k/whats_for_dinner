@@ -1,5 +1,4 @@
-from flask.globals import request
-from werkzeug.utils import redirect
+from flask import redirect, request
 from flask_app import app
 from flask_app.models.image import Image
 

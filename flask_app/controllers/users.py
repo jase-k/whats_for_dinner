@@ -44,17 +44,17 @@ def loginInUser():
 
 @app.route('/dashboard')
 def displayUserDashboard():
+    if not 'user_id' in session:
+        return redirect('/')
+    
     user = User.getUserById(session['user_id'])
-    filepath, filename = os.path.split(user.profile_image_file_path)
-    filepath = os.path.relpath(filepath,  os.getcwd()+"/flask_app/static")
-    user.profile_image_file_path = os.path.join(filepath, filename).replace('\\', '/')
-
     #Used to get os variables
     # print(os.environ.get["HOME"])
-    print("Working directory from /dashboard", os.getcwd())
+    print("Working directory from /dashboard", os.getcwd()+"/flask_app/static")
 
     return render_template('dashboard.html', user = user)
 
+#Need to update to be able to edit one thing at a time. 
 @app.route('/users/update', methods=['POST'])
 def updateUser():
     print("Request Files: ", request.files)
@@ -68,15 +68,23 @@ def updateUser():
     }
 
     User.updateUser(data)
-
     return redirect('/dashboard')
 
 @app.route('/preferences')
 def showPreferences():
-    return render_template('preferences.html')
+    if not 'user_id' in session:
+        return redirect('/')
+    user = User.getUserById(session['user_id'])
+
+    return render_template('preferences.html', user = user)
 
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect('/login')
+
+@app.route('/find_friends')
+def showFind_Friends():
+    user = User.getUserById(session['user_id'])
+    return render_template('find_friends.html', user = user)
 

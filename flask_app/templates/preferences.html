@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preferences</title>
-</head>
-<body>
-    <p><a href="/dashboard">Dashboard</a></p>
-{{ session }}
+{% extends "dashboard.html" %}
+{% block content %}
+    <h2>Preferences:</h2>
     {% with messages = get_flashed_messages(True) %}
     <form action="/users/update" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name='user_id' value="{{session['user_id']}}">
+        <input type="hidden" name='user_id' value="{{user.id}}">
         <div class="form_row">
             <label for="first_name">First Name: </label>
-            <input type="text" id="first_name" name="first_name" value="{{session['first_name']}}">
+            <input type="text" id="first_name" name="first_name" value="{{user.first_name}}">
         {% for category, message in messages %}
             {% if category == 'first_name' %}
                 <p class="flash_warning">
@@ -26,7 +18,7 @@
 
         <div class="form_row">
             <label for="last_name">Last Name: </label>
-            <input type="text" id="last_name" name="last_name" value="{{session['last_name']}}">
+            <input type="text" id="last_name" name="last_name" value="{{user.last_name}}">
             {% for category, message in messages %}
             {% if category == 'last_name' %}
                 <p class="flash_warning">
@@ -50,7 +42,7 @@
 
         <div class="form_row">
             <label for="email">Email: </label>
-            <input type="email" id="email" name="email" value="{{session['email']}}">
+            <input type="email" id="email" name="email" value="{{user.email}}">
             {% for category, message in messages %}
             {% if category == 'email' %}
                 <p class="flash_warning">
@@ -64,8 +56,7 @@
     </form>
     
     {% endwith %}
-
+    
     <script src="{{url_for('static', filename='js/country_codes.js')}}"></script>
     <script src="{{url_for('static', filename='js/registration.js')}}"></script>
-</body>
-</html>
+    {% endblock %}
