@@ -16,7 +16,7 @@ def displayRecipe(id):
 
 @app.route('/add_recipe')
 def showAddRecipePage():
-    user = User.getUserProfileById(session['user_id'])
+    user = User.getUserById(session['user_id'])
     return render_template('add_recipe.html', user = user)
 
 @app.route('/add_recipe/new', methods=['POST'])
@@ -46,7 +46,7 @@ def addRecipeToDB():
 
 @app.route('/browse_recipes')
 def showBrowse_Recipes():
-    user = User.getUserProfileById(session['user_id'])
+    user = User.getUserById(session['user_id'])
     return render_template('browse_recipes.html', user = user)
 
 @app.route('/edit_recipe/<int:id>')
