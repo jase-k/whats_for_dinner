@@ -10,15 +10,20 @@ class Image:
         self.updated_at = data['updated_at']
         self.owner_user_id = data['owner_user_id']
         self.file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
+    
+    def __str__(self) -> str:
+        return f"IMAGE INSTANCE STARTS:id: {self.id}, \n created_at: {self.created_at}, updated_at: {self.updated_at}, owner_user_id = {self.owner_user_id}, \n file_path: {self.file_path} $IMAGE INSTANCE ENDS"
 
     def deleteSelf(self):
         #Deletes from Disk
         
-        os.remove(self.file_path)
+        os.remove(os.path.join(os.getcwd()+"/flask_app/static", self.file_path))
 
         #Deletes from DataBase
         query = f"DELETE FROM images WHERE id = {self.id}"
         MySQLConnection().query_db(query)
+
+        query = f"UPDATE users SET profile_image_id = 0"
 
 
 
@@ -66,7 +71,7 @@ class Image:
     @classmethod
     def getImageById(cls, id):
         query = f"SELECT * from images WHERE id = {id}"
-        print(id)
+        print(os.getcwd())
         image = MySQLConnection().query_db(query)
 
         if not len(image) == 0:
@@ -75,3 +80,22 @@ class Image:
         else: 
             flash('Image not Found! Please contact us if problem persists', 'file')
             return False
+        
+    @classmethod
+    def getProfileImage(cls, id):
+        image = cls.getImageById(id)
+        print('CURRENT WORKING FROM PROFILE IMAGE', os.getcwd())
+        if image: 
+            return image
+        else: 
+            filepath = os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png"
+            data = {
+                'id' : None,
+                'created_at' : None,
+                'updated_at' : None,
+                'owner_user_id' : None,
+                'file_path' : filepath.replace('\\', '/')
+            }
+            
+
+            return cls(data)

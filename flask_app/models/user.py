@@ -19,21 +19,16 @@ class User():
         self.menu_id = data['menu_id']
         self.shopping_list_id = data['shopping_list_id']
         self.profile_image_id = data['profile_image_id']
-        self.profile_image = []
-        if 'file_path' in data:
-            #returns relative file path from static folder
-            self.profile_image_file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
-        else: 
-            self.profile_image_file_path = os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png"
+        self.profile_image = Image.getProfileImage(data['profile_image_id'])
+        # if 'file_path' in data:
+        #     #returns relative file path from static folder
+        #     self.profile_image_file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
+        # else: 
+        #     self.profile_image_file_path = os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png"
 
 
-    # filepath = os.path.relpath(user.profile_image_file_path,  os.getcwd()+"/flask_app/static")
-    # print("USER PROFILE PATH 3", filepath)
-    # user.profile_image_file_path = filepath.replace('\\', '/')      
- 
- 
     def __str__(self):
-        return f"id: {self.id}, first_name: '{self.first_name}', last_name: '{self.last_name}', email: '{self.email}', phone: '{self.phone}', password: '{self.password}', created_at: {self.created_at}, upated_at: {self.updated_at}, menu_id: {self.menu_id}, shopping_list_id: {self.shopping_list_id}"
+        return f" id: {self.id}, \n first_name: '{self.first_name}', \n last_name: '{self.last_name}', \n email: '{self.email}', \n phone: '{self.phone}', \n password: '{self.password}', \n created_at: {self.created_at}, \n upated_at: {self.updated_at}, \n menu_id: {self.menu_id}, \n shopping_list_id: {self.shopping_list_id}, \n profile_image_id: {self.profile_image_id}, \n  profile_image: {self.profile_image}"
     
     @classmethod
     def registerUser(cls, data):
@@ -104,24 +99,10 @@ class User():
 
         if user_fromDB:
             user = cls(user_fromDB[0])
-            photo = Image.getImageById(user_fromDB[0]['profile_image_id'])
-            
-            if photo:
-                user.profile_image.append(photo)
             return user
         else:
             print("Could not find user from database!")
             return False
-    @classmethod
-    def getUserProfileById(cls, id):
-        user = cls.getUserById(id)
-        if not user.profile_image:
-            user.profile_image.append({
-                "file_path": os.path.relpath(os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png",  os.getcwd()+"/flask_app/static").replace('\\', '/')
-                
-            })
-        print("USER ", user)
-        return user
 
     @staticmethod
     def hashPW(password):

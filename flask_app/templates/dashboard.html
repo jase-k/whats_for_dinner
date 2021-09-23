@@ -9,12 +9,12 @@
     <title>Dashboard</title>
 </head>
 <body>
-    
+    {{user}}
     <div class="navbar">
         <h2>What's For Dinner</h2>
         <div class="right_nav">
             <div id="profile_image_container">
-                <img src="{{url_for('static', filename=''+user.profile_image[0].file_path)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture" id='profile_image' class="profile_image">
+                <img src="{{url_for('static', filename=''+user.profile_image.file_path)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture" id='profile_image' class="profile_image">
                 <form action="/delete_photo" method='POST' id="delete_photo" class="hidden">
                     <input type="hidden" name='profile_image_id' value="{{user.profile_image_id}}">
                     <button id="delete_photo_button" type="submit">Delete Photo From our Records?</button>

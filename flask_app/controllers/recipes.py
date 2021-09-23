@@ -51,7 +51,7 @@ def showBrowse_Recipes():
 
 @app.route('/edit_recipe/<int:id>')
 def showEditRecipe(id):
-    user = User.getUserProfileById(session['user_id'])
+    user = User.getUserById(session['user_id'])
     recipe = Recipe.getRecipeById(id)
     return render_template('edit_recipe.html', user = user, recipe = recipe)
 

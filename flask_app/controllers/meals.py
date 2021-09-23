@@ -4,5 +4,5 @@ from flask_app.models.user import User
 
 @app.route('/record_meal')
 def showRecord_Meal():
-    user = User.getUserProfileById(session['user_id'])
+    user = User.getUserById(session['user_id'])
     return render_template('record_meal.html', user = user)
