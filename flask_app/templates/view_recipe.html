@@ -24,7 +24,7 @@
 <fieldset>
     <legend>Created By:</legend>
     <p>{{recipe.creator[0].first_name }} {{recipe.creator[0].last_name }}</p>
-    <img src='{{url_for("static", filename=""+recipe.creator[0].profile_image.file_path)}}' alt='{{recipe.creator[0].first_name }} {{recipe.creator[0].last_name }}"profile picture' class="profile_image">
+    <img src='{{url_for("static", filename=""+recipe.creator.profile_image.file_path)}}' alt='{{recipe.creator.first_name }} {{recipe.creator.last_name }}"profile picture' class="profile_image">
 </fieldset>
 <!-- Get Recipe Details Facts -->
 <fieldset>

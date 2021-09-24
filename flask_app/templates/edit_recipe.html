@@ -1,124 +1,126 @@
 {% extends 'dashboard.html' %}
 {% block content %}
-<h2>Edit Recipe: {{recipe.title}}</h2>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+<div class="container">
+    <h2>Edit Recipe: {{recipe.title}}</h2>
+    <hr>
 
-{% with messages = get_flashed_messages(True) %}
-<form action="/update_recipe" method="POST">
-    <input type="hidden" name='user_id' value="{{user.id}}">
-    <input type="hidden" name='recipe_id' value="{{recipe.id}}">
-    <div class="form_row">
-        <label for="title">Recipe Title: </label>
-        <input type="text" id="title" name="title" value="{{recipe.title}}">
-    {% for category, message in messages %}
-        {% if category == 'title' %}
-            <p class="flash_warning">
-                {{message}}
-            </p>
-        {% endif %}
-    {% endfor %}
+    {% with messages = get_flashed_messages(True) %}
+    <form action="/update_recipe" method="POST">
+        <input type="hidden" name='user_id' value="{{user.id}}">
+        <input type="hidden" name='recipe_id' value="{{recipe.id}}">
+        <div class="form_row mb-2">
+            <label class="h4" for="title">Recipe Title: </label>
+            <input type="text" id="title" name="title" value="{{recipe.title}}">
+        {% for category, message in messages %}
+            {% if category == 'title' %}
+                <p class="flash_warning h6">
+                    {{message}}
+                </p>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <div class="form_row mb-2">
+            <label class="h4" for="description">Description: </label>
+            <textarea id="description" name="description">{{recipe.description}}</textarea>
+        {% for category, message in messages %}
+            {% if category == 'description' %}
+                <p class="flash_warning h6">
+                    {{message}}
+                </p>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <div class="form_row mb-2">
+            <label class="h4" for="ingredients">Ingredients: </label>
+            <input type="text" id="ingredients" name="ingredients">
+            <button id="search_ingredients" class="btn btn-primary" type="button">Search!</button>
+
+            <ul id = 'ingredient_search_results'>
+            </ul>
+    <!-- Incoroporate API to look up ingredients and add to list -->
+        {% for category, message in messages %}
+            {% if category == 'ingredients' %}
+                <p class="flash_warning h6">
+                    {{message}}
+                </p>
+            {% endif %}
+        {% endfor %}
+        </div>
+        
+
+
+        <div class="form_row mb-2">
+            <label class="h4" for="instructions">Instructions: </label>
+            <textarea id="instrucitons" name="instructions">{{recipe.instructions}}</textarea>
+        {% for category, message in messages %}
+            {% if category == 'instructions' %}
+                <p class="flash_warning h6">
+                    {{message}}
+                </p>
+            {% endif %}
+        {% endfor %}
+        </div>
+        <div class="form_row mb-2">
+            <p class="h4">Is this a Premium Recipe?</p>
+            <label class="h6" for="premium_true">True</label>
+            <input type="radio" value="1" name="premium" id="premium_true" class="radio"
+            {% if recipe.premium == 1 %}
+            checked
+            {% endif %}
+            >
+            <label class="h6" for="premium_false">False</label>
+            <input type="radio" value="0" name="premium" id="premium_false" class="radio" 
+            {% if recipe.premium == 0 %}
+            checked
+            {% endif %}
+            >
+        </div>
+        <div id='ingredient_list' class="hidden">
+        </div>
+        <div class="form_row mb-2"><button class="btn-success" type="submit" id="submit">Save Recipe!</button></div>
+        
+        <div id= 'recipe_ingredients mb-2'>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Quantity Type</th>
+                        <th>Ingredient</th>
+                        <th>Remove?</th>
+                        <th class="hidden">Hidden</th>
+                    </tr>
+                </thead>
+                <tbody id='table_body'>
+                    {% for ingredient in recipe.ingredients %}
+                    <tr>
+                        <td><input name = 'quantity' class = 'quantity' type='float'value='{{ingredient.quantity}}'><td>
+                        <td>
+                            <select name = 'quantity_type'>
+                                <option value="{{ingredient.quantity_type}}">{{ingredient.quantity_type}}</option>
+                                <option value = 'tbsp'>tbsp</option>
+                                <option value = 'tsp'>tsp</option>
+                                <option value = 'c'>c</option>
+                                <option value = 'ml'>ml</option>
+                                <option value = 'l'>l</option>
+                                <option value = 'oz'>oz</option>
+                                <option value = 'g'>g</option>
+                                <option value = 'whole'>whole</option>
+                                <option value = 'whole'>slice</option>
+                            </select>
+                        </td>
+                        <td><input type="text" value="{{ingredient.name}}" class='readonly' name='ingredient_list' readonly></td>
+                        <td><button class='remove_ingredient btn-danger' type="button">remove</button></td>
+                        <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value={{ingredient.spoonacular_id}} ></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
     </div>
-
-    <div class="form_row">
-        <label for="description">Description: </label>
-        <textarea id="description" name="description">{{recipe.description}}</textarea>
-    {% for category, message in messages %}
-        {% if category == 'description' %}
-            <p class="flash_warning">
-                {{message}}
-            </p>
-        {% endif %}
-    {% endfor %}
-    </div>
-
-    <div class="form_row">
-        <label for="ingredients">Ingredients: </label>
-        <input type="text" id="ingredients" name="ingredients">
-        <button id="search_ingredients" type="button">Search!</button>
-
-        <ul id = 'ingredient_search_results'>
-        </ul>
-<!-- Incoroporate API to look up ingredients and add to list -->
-    {% for category, message in messages %}
-        {% if category == 'ingredients' %}
-            <p class="flash_warning">
-                {{message}}
-            </p>
-        {% endif %}
-    {% endfor %}
-    </div>
-    
-
-
-    <div class="form_row">
-        <label for="instructions">Instructions: </label>
-        <textarea id="instrucitons" name="instructions">{{recipe.instructions}}</textarea>
-    {% for category, message in messages %}
-        {% if category == 'instructions' %}
-            <p class="flash_warning">
-                {{message}}
-            </p>
-        {% endif %}
-    {% endfor %}
-    </div>
-
-    <div class="form_row">
-        <p>Is this a Premium Recipe?</p>
-        <label for="premium_true">True</label>
-        <input type="radio" value="1" name="premium" id="premium_true" class="radio"
-        {% if recipe.premium == 1 %}
-        checked
-        {% endif %}
-        >
-        <label for="premium_false">False</label>
-        <input type="radio" value="0" name="premium" id="premium_false" class="radio" 
-        {% if recipe.premium == 0 %}
-        checked
-        {% endif %}
-        >
-    </div>
-    <div id='ingredient_list' class="hidden">
-    </div>
-    <div class="form_row"><button type="submit" id="submit">Save Recipe!</button></div>
-    
-    <div id= 'recipe_ingredients'>
-        <table>
-            <thead>
-                <tr>
-                    <th>Quantity</th>
-                    <th>Quantity Type</th>
-                    <th>Ingredient</th>
-                    <th>Remove?</th>
-                    <th class="hidden">Hidden</th>
-                </tr>
-            </thead>
-            <tbody id='table_body'>
-                {% for ingredient in recipe.ingredients %}
-                <tr>
-                    <td><input name = 'quantity' class = 'quantity' type='float'value='{{ingredient.quantity}}'><td>
-                    <td>
-                        <select name = 'quantity_type'>
-                            <option value="{{ingredient.quantity_type}}">{{ingredient.quantity_type}}</option>
-                            <option value = 'tbsp'>tbsp</option>
-                            <option value = 'tsp'>tsp</option>
-                            <option value = 'c'>c</option>
-                            <option value = 'ml'>ml</option>
-                            <option value = 'l'>l</option>
-                            <option value = 'oz'>oz</option>
-                            <option value = 'g'>g</option>
-                            <option value = 'whole'>whole</option>
-                            <option value = 'whole'>slice</option>
-                        </select>
-                    </td>
-                    <td><input type="text" value="{{ingredient.name}}" class='readonly' name='ingredient_list' readonly></td>
-                    <td><button class='remove_ingredient' type="button">remove</button></td>
-                    <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value={{ingredient.spoonacular_id}} ></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </form>
 </div>
-
 {% endwith %}
 <script src="{{url_for('static', filename='js/ingredients.js')}}"></script>
 {% endblock %}

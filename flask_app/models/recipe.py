@@ -115,7 +115,7 @@ class Recipe:
                 'shopping_list_id' : raw_data[0]['shopping_list_id'],
                 'profile_image_id' : raw_data[0]['profile_image_id']
                     }
-            recipe.creator.append(User(user))
+            recipe.creator = User(user)
             image = {
                 'id' : raw_data[0]['images.id'],
                 'created_at' : raw_data[0]['images.created_at'],
