@@ -34,10 +34,10 @@ def loginInUser():
         'email' : request.form['email'],
         'password' : request.form['password']
     }
-    user = User.validateLogin(data)
-    print("RETURNED USER ", user)
+    is_vaild = User.validateLogin(data)
+    print("RETURNED USER ", is_vaild)
 
-    if user:
+    if is_vaild:
         return redirect('/dashboard')
     else:
         return redirect('/login')

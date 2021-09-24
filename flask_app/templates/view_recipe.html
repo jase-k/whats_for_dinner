@@ -1,6 +1,6 @@
 {% extends 'dashboard.html' %}
 {% block content %}
-{% if user.id == recipe.creator[0].id %}
+{% if user.id == recipe.creator.id %}
 <form action="/edit_recipe/{{recipe.id}}">
     <button type='submit'> Edit? </button>
 </form>
@@ -23,7 +23,7 @@
 <!-- Created By -->
 <fieldset>
     <legend>Created By:</legend>
-    <p>{{recipe.creator[0].first_name }} {{recipe.creator[0].last_name }}</p>
+    <p>{{recipe.creator.first_name }} {{recipe.creator.last_name }}</p>
     <img src='{{url_for("static", filename=""+recipe.creator.profile_image.file_path)}}' alt='{{recipe.creator.first_name }} {{recipe.creator.last_name }}"profile picture' class="profile_image">
 </fieldset>
 <!-- Get Recipe Details Facts -->

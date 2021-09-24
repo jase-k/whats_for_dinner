@@ -4,7 +4,7 @@
     font-family: cursive;
 }
 
-.navbar {
+.navbar421 {
     background-color: bisque;
     display: flex;
     justify-content: space-between;
@@ -31,7 +31,7 @@
     margin: 10px;
 }
 
-.dropdown {
+.dropdown421 {
     position: fixed;
     right: 0px;
     top: 75px;

@@ -20,16 +20,24 @@ class User():
         self.shopping_list_id = data['shopping_list_id']
         self.profile_image_id = data['profile_image_id']
         self.profile_image = Image.getProfileImage(data['profile_image_id'])
-        # if 'file_path' in data:
-        #     #returns relative file path from static folder
-        #     self.profile_image_file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
-        # else: 
-        #     self.profile_image_file_path = os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png"
-
+        
 
     def __str__(self):
         return f" id: {self.id}, \n first_name: '{self.first_name}', \n last_name: '{self.last_name}', \n email: '{self.email}', \n phone: '{self.phone}', \n password: '{self.password}', \n created_at: {self.created_at}, \n upated_at: {self.updated_at}, \n menu_id: {self.menu_id}, \n shopping_list_id: {self.shopping_list_id}, \n profile_image_id: {self.profile_image_id}, \n  profile_image: {self.profile_image}"
     
+    @classmethod
+    def validateLogin(cls, data):
+        print("Data Recieved from Login: ", data)
+
+        user = cls.getUserByEmail(data['email'])
+
+        if user:
+            password = cls.checkMatchPW(data['password'], user.password)
+            if password:
+                session['user_id'] = user.id
+                return user
+        return False
+
     @classmethod
     def registerUser(cls, data):
         query = "INSERT INTO users (first_name, last_name, email, password, phone, created_at, updated_at) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, %(phone)s, NOW(), NOW())"
@@ -93,6 +101,16 @@ class User():
         
         return pw_check 
 
+    @classmethod
+    def getUserByEmail(cls, email):
+        query = f'SELECT * FROM users WHERE email = "{email}"'
+
+        user = MySQLConnection().query_db(query)
+
+        if user:
+            return cls(user[0])
+        else:
+            return False
 
     @classmethod
     def validateRegistration(cls, data):
