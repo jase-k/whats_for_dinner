@@ -73,10 +73,13 @@ class Image:
         query = f"SELECT * from images WHERE id = {id}"
         print(os.getcwd())
         image = MySQLConnection().query_db(query)
-
-        if not len(image) == 0:
-            image = cls(image[0])
-            return image
+        if image:
+            if not len(image) == 0:
+                image = cls(image[0])
+                return image
+            else: 
+                flash('Image not Found! Please contact us if problem persists', 'file')
+                return False
         else: 
             flash('Image not Found! Please contact us if problem persists', 'file')
             return False
