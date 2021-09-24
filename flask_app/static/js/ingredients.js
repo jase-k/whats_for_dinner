@@ -37,7 +37,7 @@ function addToList(){
     console.log(this)
     var row = document.createElement('tr')
     row.innerHTML = `
-    <td><input name = 'quantity' class = 'quantity' type='float'><td>
+    <td><input name = 'quantity' class = 'quantity' type='float'></td>
     <td>
         <select name = 'quantity_type'>
             <option value = 'tbsp'>tbsp</option>

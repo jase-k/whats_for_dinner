@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
     {% block header %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
     {% endblock %}
     
     {% block title %}
@@ -39,6 +39,125 @@
     </div>
     <div class="spacer"></div>
     {% block content %}
+        <div class="feed_container box">
+            <h2>Feed</h2>
+            <p>A Space to see what your friends are eating and for inspiration of what to cook. Meal suggestions etc. COMING SOON.. . ish</p>
+        </div>
+        <div class="shopping_list box">
+            <h2>Shopping List</h2>
+            <button type="button">Edit</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Quantity Type</th>
+                        <th>Ingredient</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                    <tr class="shopping_list_row">
+                        <td>5</td>
+                        <td>tbsp</td>
+                        <td>Ingredient Name</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="meal_plan box">
+            <h2>Meal Plan</h2>
+            <table>
+                <thead>
+                    <th>Day</th>
+                    <th>Meal Details</th>
+                    <th>Type of Meal</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Monday</th>
+                        <td>
+                            <a href="/recipes/7">Texas SouthWestern Beef Soup</a><br>
+                            <a href="/recipes/5">Spinach and Artichoke Dip</a>
+                        </td>
+                        <td>Dinner (evening)</td>
+                    </tr>
+                    <tr>
+                        <th>Tuesday</th>
+                        <td><a href="/recipes/3">BLT</a></td>
+                        <td>Dinner (evening)</td>
+                        
+                    </tr>
+                    <tr>
+                        <th>Wednesday</th>
+                        <td><a href="/recipes/4">Champions Breakfast</a></td>
+                        <td>Dinner (evening)</td>
+                    </tr>
+                    <tr>
+                        <th>Thursday</th>
+                        <td><a href="/recipes/5">Spinach and Artichoke Dip</a></td>
+                        <td>Dinner (evening)</td>
+                    </tr>
+                    <tr>
+                        <th>Friday</th>
+                        <td><a href="/recipes/7">Texas SouthWestern Beef Soup</a></td>
+                        <td>Dinner (evening)</td>
+                    </tr>
+                    <tr>
+                        <th>Saturday</th>
+                        <td><a href="/recipes/4">Champions Breakfast</a></td>
+                        <td>Breakfast</td>
+                    </tr>
+                    <tr>
+                        <th>Sunday</th>
+                        <td><a href="/recipes/6">Breakfast Casserole</a></td>
+                        <td>Breakfast</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
     {% endblock %}
     <script src="{{url_for('static', filename='js/dashboard.js')}}"></script>
 </body>
