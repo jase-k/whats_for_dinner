@@ -123,7 +123,7 @@ class Recipe:
                 'owner_user_id' : raw_data[0]['owner_user_id'],
                 'file_path' : raw_data[0]['file_path']
             }
-            recipe.creator[0].profile_image.append(Image(image))
+            recipe.creator[0].profile_image = (Image(image))
             print("THIS IS THE IMAGE: ", recipe.creator[0].profile_image)
 
             for row in raw_data:

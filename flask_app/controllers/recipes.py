@@ -7,7 +7,7 @@ from flask_app.models.recipe import Recipe
 @app.route('/recipes/<int:id>')
 def displayRecipe(id):
     recipe = Recipe.getRecipeById(id)
-    user = User.getUserProfileById(session['user_id'])
+    user = User.getUserById(session['user_id'])
 
     if recipe: 
         return render_template('view_recipe.html', recipe = recipe, user = user) 

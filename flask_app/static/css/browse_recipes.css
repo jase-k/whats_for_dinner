@@ -1,0 +1,74 @@
+#search_results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.recipe_container {
+    width: 80%;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.recipe_image {
+    position: relative;
+    z-index: -1;
+}
+
+.w100{
+    width: 100%;
+}
+.w50{
+    width: 50%;
+}
+
+.save {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    height: 15%;
+    width: 100px;
+}
+
+.save:hover{
+    background-color: blue;
+    color: white;
+}
+
+.small_information{
+    display: flex;
+
+}
+.nutrient_name{
+    flex: 2;
+}
+.nutrient_amount{
+    margin-right: 10px;
+}
+
+.recipe_title {
+    margin-top: -10px;
+    background-color: rgb(255, 250, 250, 0.5);
+    width: fit-content;
+}
+
+td, th {
+    font-size: smaller;
+}
+
+.ingredients, .nutrition {
+    margin: auto 10px;
+}
+
+
+tr {
+    display: flex;
+    justify-content: space-between;
+}

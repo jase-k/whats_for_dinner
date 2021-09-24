@@ -60,34 +60,6 @@ class User():
         else: 
             return False
 
-#Gets user from database if finds a matching email. If no matching email found return False
-    @classmethod
-    def getUserByEmail(cls, email):
-        query = f"SELECT * from users LEFT JOIN images ON profile_image_id = images.id WHERE email = '{email}'"
-
-        user_fromDB = MySQLConnection().query_db(query)
-
-        #if is a success, puts the user in an instance instead of list
-        if user_fromDB:
-            user = cls(user_fromDB[0])
-            session['email_login'] = user.email
-            return user
-        else:
-            flash("Email not recognized..", 'login')
-            return False
-    
-    @classmethod
-    def validateLogin(cls, data):
-        print("Data Recieved from Login: ", data)
-
-        user = cls.getUserByEmail(data['email'])
-
-        if user:
-            password = cls.checkMatchPW(data['password'], user.password)
-            if password:
-                session['user_id'] = user.id
-                return user
-        return False
 
 #Gets user from database returns an Instance of User
     @classmethod

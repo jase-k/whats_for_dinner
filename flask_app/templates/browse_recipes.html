@@ -1,4 +1,142 @@
 {% extends 'dashboard.html' %}
+{% block header %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/browse_recipes.css')}}">
+{% endblock %}
+{% block title %}
+<title>Browse Recipes</title>
+{% endblock %}
 {% block content %}
 <h2>Browse Recipes</h2>
+
+
+    <label for="search_by">Search by: </label>
+
+    <div class="form-row">
+        <label for="maxReadyTime">Max Time to Prepare: (in minutes)</label>
+        <input type="number" min='15' max="1440" name="maxReadyTime" id="maxReadyTime">
+    </div>
+    <div class="form-row">
+        <label for="cuisines">Select Your Cuisine:</label>
+        <select name="cuisine" id="cuisines">
+            <!-- Options inserted from browse_recipes.js -->
+        </select>
+    </div>
+    <button id="search" type="button">Search!</button>
+    <div id="search_results">
+        <!-- Dynamic Content from browse_recipes.js -->
+        <div class="recipe_container">
+            <div class="recipe_image">
+                <img class="image_for_recipe w100" src="{{url_for('static', filename= 'imgs/ux/plate.png')}}" alt="">
+                <button class= "save" type="button">Save!</button>
+            </div>
+        <h3 class="recipe_title">Title of Recipe Goes Here!</h3>
+        <div class="recipe_information w100">
+            <div class="small_information">
+                <div class="ingredients w50">
+                    <h5>Ingredients</h5>
+                    <table class="w100">
+                        <tbody>
+                            <tr>
+                                <td class="ingredient_name">flour</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">potatoes</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">soup</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                            <tr>
+                                <td class="ingredient_name">green onions</td>
+                                <td class="ingredient_amount">2 tbsp</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="nutrition w50">
+                    <h5>Nutrition Information:</h5>
+                    <table class="w100">
+                        <tbody class="">
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                            <tr class="nutrient_row">
+                                <th class="nutrient_name">Nutrient</th>
+                                <td class="nutrient_amount">5g</td>
+                                <td class="nutrient_percent">50%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+
+        </div>
+    </div>
+
+
+<script src="{{url_for('static', filename='js/browse_recipes.js')}}"></script>
 {% endblock %}
