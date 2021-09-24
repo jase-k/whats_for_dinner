@@ -68,9 +68,10 @@
 
                     <div class="form_row mb-2">
                         <label class="h4" for="phone">Phone Number: </label>
-                        <select name="country_code" id="country_code">
-
-                        </select>
+                        <input list='country_code'  name='country_code'>
+                        <datalist  id="country_code">
+<!-- Dynamically filled by Registration.js -->
+                        </datalist>
                         <input type="phone" id="phone" name="phone" value="{{session['phone']}}">
                         {% for category, message in messages %}
                         {% if category == 'phone' %}

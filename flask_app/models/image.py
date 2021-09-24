@@ -70,19 +70,21 @@ class Image:
 
     @classmethod
     def getImageById(cls, id):
+        if not id: 
+            return False
+            
         query = f"SELECT * from images WHERE id = {id}"
         print(os.getcwd())
         image = MySQLConnection().query_db(query)
-        if image:
-            if not len(image) == 0:
-                image = cls(image[0])
-                return image
-            else: 
-                flash('Image not Found! Please contact us if problem persists', 'file')
-                return False
+
+
+        if not len(image) == 0:
+            image = cls(image[0])
+            return image
         else: 
             flash('Image not Found! Please contact us if problem persists', 'file')
             return False
+
         
     @classmethod
     def getProfileImage(cls, id):

@@ -29,9 +29,8 @@ function display_country_codes(){
     for(const [key, value ] of Object.entries(country_codes_data)){
         
         var child = document.createElement('option')
-        child.value = value.dialling_code
-        child.innerHTML = `${value.country_name} (${value.dialling_code})`
-        
+        child.value = `${value.dialling_code}`
+        child.innerHTML = `${value.country_name}`
         phone_select.append(child)
     }
 }
