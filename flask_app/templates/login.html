@@ -4,40 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/registration.css')}}
+    ">
+    <title>Login Page</title>
 </head>
 <body>
-    {% with messages = get_flashed_messages(True) %}
-
-    <form action="/login/existing_user" method="POST">
-        <div class="form_row">
-            <label for="email">Email: </label>
-            <input type="email" id="email" name="email" value="{{session['email']}}">
-            {% for category, message in messages %}
-            {% if category == 'email' %}
-                <p class="flash_warning">
-                    {{message}}
-                </p>
-            {% endif %}
-        {% endfor %}
+    <div class="outter_box">
+        <img class="bg" src="{{url_for('static', filename='imgs/ux/registration_login_bg.png')}}" alt="">
+        <div class="box m-lg-5">
+            <div class="container p-lg-5">
+                {% with messages = get_flashed_messages(True) %}
+                <form action="/login/existing_user" method="POST">
+                    <div class="form_row mb-2">
+                        <label class="h4" for="email">Email: </label>
+                        <input type="email" id="email" name="email" value="{{session['email']}}">
+                        {% for category, message in messages %}
+                        {% if category == 'email' %}
+                            <p class="flash_warning">
+                                {{message}}
+                            </p>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                    
+                    <div class="form_row mb-2">
+                        <label class="h4" for="password">Password: </label>
+                        <input type="text" id="password" name="password">
+                        {% for category, message in messages %}
+                        {% if category == 'password' %}
+                            <p class="flash_warning">
+                                {{message}}
+                            </p>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                
+                    <div class="form_row"><button class="btn btn-primary" type="submit" id="submit">Login!</button></div>
+                </form>
+                <p class="h6">Not a member yet? <a href="/register">Register Here</a></p>
+                {% endwith %}
+            </div>
         </div>
-        
-        <div class="form_row">
-            <label for="password">Password: </label>
-            <input type="text" id="password" name="password">
-            {% for category, message in messages %}
-            {% if category == 'password' %}
-                <p class="flash_warning">
-                    {{message}}
-                </p>
-            {% endif %}
-        {% endfor %}
-        </div>
-    
-        <div class="form_row"><button type="submit" id="submit">Login!</button></div>
-    </form>
-    <p>or <a href="/register">Register Here</a></p>
-
-    {% endwith %}
+    </div>
 </body>
 </html>
