@@ -9,10 +9,32 @@ def displayRecipe(id):
     recipe = Recipe.getRecipeById(id)
     user = User.getUserById(session['user_id'])
 
+    creator = User.getUserById(recipe.creator_id)
+
     if recipe: 
-        return render_template('view_recipe.html', recipe = recipe, user = user) 
+        return render_template('view_recipe.html', recipe = recipe, user = user, creator = creator) 
     else:
         return 'False'
+
+@app.route('/recipes/<int:recipe_id>/favorite')
+def favoriteARecipe(recipe_id):
+    data = {
+        'user_id' : session['user_id'],
+        'recipe_id': recipe_id
+    }
+    Recipe.favoriteARecipe(data)
+
+    return redirect(f'/recipes/{recipe_id}')
+
+@app.route('/recipes/<int:recipe_id>/unfavorite')
+def unfavoriteARecipe(recipe_id):
+    data = {
+        'user_id' : session['user_id'],
+        'recipe_id': recipe_id
+    }
+    Recipe.unfavoriteARecipe(data)
+
+    return redirect(f'/recipes/{recipe_id}')
 
 @app.route('/add_recipe')
 def showAddRecipePage():

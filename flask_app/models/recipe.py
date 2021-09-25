@@ -3,20 +3,22 @@ from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request, session
 from flask_app.models.ingredient import Ingredient
 from flask_app.models.image import Image
-from flask_app.models.user import User
 
 class Recipe:
     def __init__(self, data) -> None:
         self.id = data['id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.creator = {}
+        self.creator_id = data['creator_id']
         self.title = data['title']
         self.instructions = data['instructions']
         self.description = data['description']
         self.premium = data['premium']
         self.ingredients = []
-        self.creator = []
+
+    def __str__(self) -> str:
+        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}"
+        
 
     @staticmethod
     def addRecipe(data):
@@ -102,28 +104,6 @@ class Recipe:
 
         if raw_data: 
             recipe = cls(raw_data[0])
-            user = {  
-                'id' : raw_data[0]['users.id'],
-                'first_name' : raw_data[0]['first_name'],
-                'last_name' : raw_data[0]['last_name'],
-                'email' : raw_data[0]['email'],
-                'phone' : raw_data[0]['phone'],
-                'password' : raw_data[0]['password'], #will come from the database hashed,
-                'created_at' : raw_data[0]['users.created_at'],
-                'updated_at' : raw_data[0]['users.updated_at'],
-                'menu_id' : raw_data[0]['menu_id'],
-                'shopping_list_id' : raw_data[0]['shopping_list_id'],
-                'profile_image_id' : raw_data[0]['profile_image_id']
-                    }
-            recipe.creator = User(user)
-            image = {
-                'id' : raw_data[0]['images.id'],
-                'created_at' : raw_data[0]['images.created_at'],
-                'updated_at' : raw_data[0]['images.updated_at'],
-                'owner_user_id' : raw_data[0]['owner_user_id'],
-                'file_path' : raw_data[0]['file_path']
-            }
-            recipe.creator.profile_image = (Image(image))
 
             for row in raw_data:
                 ingredient = {
@@ -191,3 +171,35 @@ class Recipe:
         return is_valid
 
 
+    @staticmethod
+    def favoriteARecipe(data):
+        # Data object should include: 'user_id' and 'recipe_id' keys
+        query = "INSERT INTO favorites_recipes (updated_at, user_id, recipe_id) VALUES (NOW(), %(user_id)s, %(recipe_id)s)"
+        
+        id = MySQLConnection().query_db(query, data)
+
+        if id: 
+            flash('A Server error occured when trying to favorite a recipe. Please contact us if problem persists.')
+            return id
+        else:
+            return False
+
+    @staticmethod
+    def unfavoriteARecipe(data):
+        query = "DELETE FROM favorites_recipes WHERE user_id = %(user_id)s AND recipe_id = %(recipe_id)s"
+
+        MySQLConnection().query_db(query, data)
+
+        return 1
+
+    @classmethod
+    def getFavoriteRecipes(cls,user_id):
+        query = f"SELECT * from favorites_recipes LEFT JOIN recipes ON  recipe_id = recipes.id WHERE user_id = {user_id}"
+        
+        db_data = MySQLConnection().query_db(query)
+
+        recipes = []
+        for row in db_data:
+            recipes.append(cls(row))
+
+        return recipes

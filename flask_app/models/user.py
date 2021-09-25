@@ -1,6 +1,8 @@
+
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, session, jsonify, request
 from flask_app.models.image import Image
+from flask_app.models.recipe import Recipe
 import os
 import bcrypt
 import re
@@ -20,10 +22,11 @@ class User():
         self.shopping_list_id = data['shopping_list_id']
         self.profile_image_id = data['profile_image_id']
         self.profile_image = Image.getProfileImage(data['profile_image_id'])
+        self.favorites = Recipe.getFavoriteRecipes(data['id'])
         
 
     def __str__(self):
-        return f" id: {self.id}, \n first_name: '{self.first_name}', \n last_name: '{self.last_name}', \n email: '{self.email}', \n phone: '{self.phone}', \n password: '{self.password}', \n created_at: {self.created_at}, \n upated_at: {self.updated_at}, \n menu_id: {self.menu_id}, \n shopping_list_id: {self.shopping_list_id}, \n profile_image_id: {self.profile_image_id}, \n  profile_image: {self.profile_image}"
+        return f" id: {self.id}, \n first_name: '{self.first_name}', \n last_name: '{self.last_name}', \n email: '{self.email}', \n phone: '{self.phone}', \n password: '{self.password}', \n created_at: {self.created_at}, \n upated_at: {self.updated_at}, \n menu_id: {self.menu_id}, \n shopping_list_id: {self.shopping_list_id}, \n profile_image_id: {self.profile_image_id}, \n  profile_image: {self.profile_image} favorites: {self.favorites}"
     
     @classmethod
     def validateLogin(cls, data):
@@ -79,6 +82,7 @@ class User():
 
         if user_fromDB:
             user = cls(user_fromDB[0])
+            print("RETRIEVING USER: ", user)
             return user
         else:
             print("Could not find user from database!")

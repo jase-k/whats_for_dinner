@@ -1,12 +1,14 @@
 {% extends 'dashboard.html' %}
 {% block content %}
-{% if user.id == recipe.creator.id %}
+{% if user.id == creator.id %}
 <form action="/edit_recipe/{{recipe.id}}">
     <button type='submit'> Edit? </button>
 </form>
 {% endif %}
 
 <h2>{{ recipe.title}}</h2>
+<a href="/recipes/{{recipe.id}}/favorite"><button>Favorite</button></a>
+<a href="/recipes/{{recipe.id}}/unfavorite"><button>unFavorite</button></a>
 
 <!-- Get Nutient Facts Coming Soon! -->
 <fieldset>
@@ -23,8 +25,8 @@
 <!-- Created By -->
 <fieldset>
     <legend>Created By:</legend>
-    <p>{{recipe.creator.first_name }} {{recipe.creator.last_name }}</p>
-    <img src='{{url_for("static", filename=""+recipe.creator.profile_image.file_path)}}' alt='{{recipe.creator.first_name }} {{recipe.creator.last_name }}"profile picture' class="profile_image">
+    <p>{{creator.first_name }} {{creator.last_name }}</p>
+    <img src='{{url_for("static", filename=""+creator.profile_image.file_path)}}' alt='{{creator.first_name }} {{creator.last_name }}"profile picture' class="profile_image">
 </fieldset>
 <!-- Get Recipe Details Facts -->
 <fieldset>
