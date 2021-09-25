@@ -14,7 +14,7 @@ class Recipe:
         self.instructions = data['instructions']
         self.description = data['description']
         self.premium = data['premium']
-        self.ingredients = []
+        self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
 
     def __str__(self) -> str:
         return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}"
@@ -98,27 +98,13 @@ class Recipe:
     @classmethod
     def getRecipeById(cls, id):
         #Join User info, reviews
-        query = f"SELECT * FROM recipes LEFT JOIN recipes_ingredients ON recipes.id = recipes_ingredients.recipe_id LEFT JOIN ingredients ON recipes_ingredients.ingredient_id = ingredients.id LEFT JOIN users ON recipes.creator_id = users.id LEFT JOIN images ON users.profile_image_id = images.id WHERE recipes.id = {id}"
+        query = f"SELECT * FROM recipes WHERE recipes.id = {id}"
         
         raw_data = MySQLConnection().query_db(query)
 
         if raw_data: 
             recipe = cls(raw_data[0])
 
-            for row in raw_data:
-                ingredient = {
-                    'id' : row['ingredients.id'],
-                    'created_at' : row['ingredients.created_at'],
-                    'updated_at' : row['ingredients.updated_at'],
-                    'name' : row['name'],
-                    'allergy_id' : row['allergy_id'],
-                    'spoonacular_id' : row['spoonacular_id'],
-                    'recipe_id': recipe.id
-                }
-                recipe.ingredients.append(Ingredient(ingredient))
-
-
-            # print(raw_data)
             print("THIS IS A RECIPE", recipe)
             return recipe
         else:
@@ -200,6 +186,17 @@ class Recipe:
 
         recipes = []
         for row in db_data:
-            recipes.append(cls(row))
+            data = {
+                "id" : row['recipe_id'],
+                "created_at" : row['recipes.created_at'],
+                "updated_at" : row['recipes.updated_at'],
+                "creator_id" : row['creator_id'],
+                "title" : row['title'],
+                "instructions" : row['instructions'],
+                "description" : row['description'],
+                "premium" : row['premium'],
+            }
+
+            recipes.append(cls(data))
 
         return recipes

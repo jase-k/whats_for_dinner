@@ -7,15 +7,20 @@
 {% endif %}
 
 <h2>{{ recipe.title}}</h2>
+{% for favorite in user.favorites %}
+{% if recipe.id == favorite.id %}
+<p>1 iteration</p>
+    <a href="/recipes/{{recipe.id}}/unfavorite"><button>unFavorite</button></a>
+    {% endif %}
+{% endfor %}
 <a href="/recipes/{{recipe.id}}/favorite"><button>Favorite</button></a>
-<a href="/recipes/{{recipe.id}}/unfavorite"><button>unFavorite</button></a>
 
 <!-- Get Nutient Facts Coming Soon! -->
 <fieldset>
     <legend>Nutrition Facts</legend>
     <p>Coming Soon!</p>
 </fieldset>
-<!-- Get Ingredient List -->
+<!-- Get Ingredient List --
 
 
 <fieldset>
@@ -33,6 +38,27 @@
     <legend>Instructions</legend>
     <p>{{recipe.instructions}}</p>
 </fieldset>
+<h3>Ingredients</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Quantity</th>
+            <th>Quantity Type</th>
+            <th>Ingredient</th>
+            <th class="hidden">Hidden</th>
+        </tr>
+    </thead>
+    <tbody id='table_body'>
+        {% for ingredient in recipe.ingredients %}
+        <tr>
+            <td>{{ingredient.quantity}}</td>
+            <td>{{ingredient.quantity_type}}</td>
+            <td><a href="">{{ingredient.name}}</a></td>
+            <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value={{ingredient.spoonacular_id}} ></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 <h5>Leave Review?</h5>
 <h5>Ask a Question</h5>

@@ -96,7 +96,7 @@
                 <tbody id='table_body'>
                     {% for ingredient in recipe.ingredients %}
                     <tr>
-                        <td><input name = 'quantity' class = 'quantity' type='float'value='{{ingredient.quantity}}'><td>
+                        <td><input name = 'quantity' class = 'quantity' type='float'value='{{ingredient.quantity}}'></td>
                         <td>
                             <select name = 'quantity_type'>
                                 <option value="{{ingredient.quantity_type}}">{{ingredient.quantity_type}}</option>

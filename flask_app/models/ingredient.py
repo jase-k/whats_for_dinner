@@ -12,9 +12,20 @@ class Ingredient:
         self.allergy_id = data['allergy_id']
         #API Spoonacular_id. Used to call for information
         self.spoonacular_id = data['spoonacular_id']
-        if 'recipe_id' in data:
-            self.quantity = Ingredient.getRecipesIngredients(data['recipe_id'], data['id'])['quantity']
-            self.quantity_type = Ingredient.getRecipesIngredients(data['recipe_id'], data['id'])['quantity_type']
+        if 'quantity' in data:
+            self.quantity = data['quantity']
+        if 'quantity_type' in data:
+            self.quantity_type = data['quantity_type']
+
+    def __str__(self) -> str:
+        str = f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, name: {self.name}, allergy_id: {self.allergy_id}, spoonacular_id: {self.spoonacular_id}"
+
+        if 'quantity' in self:
+            str += f", quantity: {self.quantity}"
+        if 'quantity_type' in self:
+            str += f", quantity_type: {self.quantity_type}"
+        
+        return str
 
     @classmethod
     def addIngredient(cls, data):
@@ -46,10 +57,25 @@ class Ingredient:
         return id
     
     @staticmethod
-    def getRecipesIngredients(recipe_id, ingredient_id ):
+    def getRecipesIngredients(recipe_id, ingredient_id):
         query = f"SELECT * FROM recipes_ingredients WHERE recipe_id = {recipe_id} AND ingredient_id = {ingredient_id}"
 
         results = MySQLConnection().query_db(query)[0]
 
         return results
+    
+    @classmethod
+    def getAllRecipeIngredients(cls, recipe_id):
+        query = f"SELECT * FROM ingredients JOIN recipes_ingredients ON recipes_ingredients.ingredient_id = ingredients.id WHERE recipe_id = {recipe_id}"
+
+        db_results = MySQLConnection().query_db(query)
+
+        ingredients = []
+
+        if db_results:
+            for row in db_results:
+                ingredients.append(cls(row))
+        return ingredients
+        
+        
 
