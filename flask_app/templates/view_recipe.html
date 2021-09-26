@@ -1,5 +1,9 @@
 {% extends 'dashboard.html' %}
+{% block title %}
+    <title>View Recipe</title>
+{% endblock %}
 {% block content %}
+
 {% if user.id == creator.id %}
 <form action="/edit_recipe/{{recipe.id}}">
     <button type='submit'> Edit? </button>
@@ -7,13 +11,12 @@
 {% endif %}
 
 <h2>{{ recipe.title}}</h2>
-{% for favorite in user.favorites %}
-{% if recipe.id == favorite.id %}
-<p>1 iteration</p>
-    <a href="/recipes/{{recipe.id}}/unfavorite"><button>unFavorite</button></a>
-    {% endif %}
-{% endfor %}
+
+{% if recipe.is_favorite(user.favorites) %}
+<a href="/recipes/{{recipe.id}}/unfavorite"><button>unFavorite</button></a>
+{% else %}
 <a href="/recipes/{{recipe.id}}/favorite"><button>Favorite</button></a>
+{% endif %}
 
 <!-- Get Nutient Facts Coming Soon! -->
 <fieldset>

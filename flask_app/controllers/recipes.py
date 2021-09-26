@@ -4,6 +4,8 @@ from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.recipe import Recipe
 
+
+
 @app.route('/recipes/<int:id>')
 def displayRecipe(id):
     recipe = Recipe.getRecipeById(id)

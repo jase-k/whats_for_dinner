@@ -18,6 +18,13 @@ class Recipe:
 
     def __str__(self) -> str:
         return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}"
+    
+    def is_favorite(self, array):
+        is_valid = False
+        for x in array: 
+            if self.id == x.id:
+                is_valid = True
+        return is_valid
         
 
     @staticmethod
