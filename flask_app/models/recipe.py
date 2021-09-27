@@ -3,6 +3,7 @@ from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request, session
 from flask_app.models.ingredient import Ingredient
 from flask_app.models.image import Image
+from flask_app.models.cuisine import Cuisine
 
 class Recipe:
     def __init__(self, data) -> None:
@@ -14,10 +15,11 @@ class Recipe:
         self.instructions = data['instructions']
         self.description = data['description']
         self.premium = data['premium']
+        self.cuisines = Cuisine.getRecipeCuisines(data['id'])
         self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
 
     def __str__(self) -> str:
-        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}"
+        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}"
     
     def is_favorite(self, array):
         is_valid = False
@@ -32,6 +34,9 @@ class Recipe:
         query = "INSERT INTO recipes (created_at, updated_at, creator_id, title, instructions, premium, description) VALUES(NOW(), NOW(), %(user_id)s, %(title)s, %(instructions)s, %(premium)s, %(description)s)"
 
         recipe_id = MySQLConnection().query_db(query, data)
+
+        for cuisine in data['cuisines']:
+            Cuisine.addCuisineToRecipe(recipe_id, cuisine)
 
         if recipe_id:
             for x in range(len(data['ingredients'])):
@@ -72,6 +77,7 @@ class Recipe:
         query = f"DELETE FROM recipes_ingredients WHERE recipe_id = {data['recipe_id']}"
         MySQLConnection().query_db(query)
 
+        Cuisine.updateRecipesCuisines(data['recipe_id'], data['cuisines'])
 
         #Adds new Ingredient connections
         for x in range(len(data['ingredients'])):
@@ -89,6 +95,7 @@ class Recipe:
                 'quantity' : data['quantity'][x],
                 'quantity_type' : data['quantity_type'][x]
             }
+            
             if ingredient:
                 details['ingredient_id'] = ingredient.id
             else: 

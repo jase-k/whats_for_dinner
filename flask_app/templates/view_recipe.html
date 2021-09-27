@@ -23,8 +23,14 @@
     <legend>Nutrition Facts</legend>
     <p>Coming Soon!</p>
 </fieldset>
-<!-- Get Ingredient List --
+<!-- Get Ingredient List -->
 
+<div>
+    <h3>Tags:</h3>
+    {% for cuisine in recipe.cuisines %}
+        <p class="tags">{{cuisine.name}}</p>
+    {% endfor %}
+</div>
 
 <fieldset>
     <legend>Description</legend>

@@ -68,7 +68,13 @@
             {% endif %}
         {% endfor %}
         </div>
-
+        <div class="form_row">
+            <label for="cuisines">Cuisines:</label>
+                {% for cuisine in cuisines %}
+                    <input type="checkbox" value="{{cuisine.id}}" name="cuisines" id="{{cuisine.name}}{{cuisine.id}}">
+                    <label for="{{cuisine.name}}{{cuisine.id}}">{{cuisine.name}}</label>
+                {% endfor %}
+        </div>
         <div class="form_row mb-2">
             <p class="h4">Is this a Premium Recipe?</p>
             <label class="h6" for="premium_true">True</label>

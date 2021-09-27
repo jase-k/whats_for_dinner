@@ -80,8 +80,19 @@
         </div>
         <div id='ingredient_list' class="hidden">
         </div>
+        <div class="form_row">
+            <label for="cuisines">Cuisines:</label>
+                {% for cuisine in cuisines %}
+                    <input type="checkbox" value="{{cuisine.id}}" name="cuisines" id="{{cuisine.name}}{{cuisine.id}}"
+                    {% if cuisine.is_in_recipe(recipe.cuisines) %}
+                        checked
+                    {% endif %}
+                    >
+                    <label for="{{cuisine.name}}{{cuisine.id}}">{{cuisine.name}}</label>
+                {% endfor %}
+        </div>
         <div class="form_row mb-2"><button class="btn-success" type="submit" id="submit">Save Recipe!</button></div>
-        
+
         <div id= 'recipe_ingredients mb-2'>
             <table>
                 <thead>
@@ -122,5 +133,6 @@
     </div>
 </div>
 {% endwith %}
+<script src="{{url_for('static', filename='js/cuisines.js')}}"></script>
 <script src="{{url_for('static', filename='js/ingredients.js')}}"></script>
 {% endblock %}

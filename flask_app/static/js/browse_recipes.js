@@ -5,19 +5,6 @@ var spoonacular_access_key = '8ed850e1602d441a8215de623bacac90'
 //search button adding click functionality
 document.getElementById('search').addEventListener('click', getRecipes)
 
-//Adds cuisine options to the form on browse_recipes.html
-function addCuisines(){
-    var selectElement = document.getElementById('cuisines')
-    var listOfCuisines = ['African', 'American', 'British', 'Cajun', 'Caribbean', 'Chinese', 'Eastern European', 'European', 'French', 'German', 'Greek', 'Indian', 'Irish', 'Italian', 'Japanese', 'Jewish', 'Korean', 'Latin American', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Nordic', 'Southern', 'Spanish', 'Thai', 'Vietnamese']
-    for(var i = 0; i < listOfCuisines.length; i++){
-        var child = document.createElement('option')
-        child.value = listOfCuisines[i]
-        child.innerHTML = listOfCuisines[i]
-        // console.log(child)
-        selectElement.appendChild(child)
-    }
-}
-addCuisines()
 
 async function getRecipes(){
     var cuisine_value = document.getElementById('cuisines').value
@@ -42,7 +29,7 @@ function displayRecipeResults(results){
         <div class="recipe_container">
             <div class="recipe_image w100">
                 <img class="image_for_recipe w100" src="${results[i].image}" alt="">
-                <img class= "heart_image" src="" alt="">
+                <button class= "save" type="button">Favorite!</button>
             </div>
         <h3 class="recipe_title">${results[i].title}</h3>
         <div class="recipe_information w100">

@@ -3,6 +3,7 @@ from flask import redirect, request, session, render_template
 from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.recipe import Recipe
+from flask_app.models.cuisine import Cuisine
 
 
 
@@ -41,7 +42,8 @@ def unfavoriteARecipe(recipe_id):
 @app.route('/add_recipe')
 def showAddRecipePage():
     user = User.getUserById(session['user_id'])
-    return render_template('add_recipe.html', user = user)
+    cuisines = Cuisine.getAllCuisines()
+    return render_template('add_recipe.html', user = user, cuisines = cuisines)
 
 @app.route('/add_recipe/new', methods=['POST'])
 def addRecipeToDB():
@@ -51,6 +53,7 @@ def addRecipeToDB():
         'title' : request.form['title'],
         'description' : request.form['description'],
         'instructions' : request.form['instructions'],
+        'cuisines' : request.form.getlist('cuisines'),
         'ingredients' : request.form.getlist('ingredient_list'),
         'quantity' : request.form.getlist('quantity'),
         'premium' : request.form['premium'],
@@ -71,13 +74,18 @@ def addRecipeToDB():
 @app.route('/browse_recipes')
 def showBrowse_Recipes():
     user = User.getUserById(session['user_id'])
-    return render_template('browse_recipes.html', user = user)
+    cuisines = Cuisine.getAllCuisines()
+
+    return render_template('browse_recipes.html', user = user, cuisines = cuisines)
 
 @app.route('/edit_recipe/<int:id>')
 def showEditRecipe(id):
     user = User.getUserById(session['user_id'])
     recipe = Recipe.getRecipeById(id)
-    return render_template('edit_recipe.html', user = user, recipe = recipe)
+    cuisines = Cuisine.getAllCuisines()
+    print(recipe)
+
+    return render_template('edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines)
 
 @app.route('/update_recipe', methods=['POST'])
 def updateRecipe():
@@ -87,6 +95,7 @@ def updateRecipe():
         'title' : request.form['title'],
         'description' : request.form['description'],
         'instructions' : request.form['instructions'],
+        'cuisines' : request.form.getlist('cuisines'),
         'ingredients' : request.form.getlist('ingredient_list'),
         'quantity' : request.form.getlist('quantity'),
         'premium' : request.form['premium'],
