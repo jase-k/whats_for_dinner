@@ -40,31 +40,16 @@ class Recipe:
 
         if recipe_id:
             for x in range(len(data['ingredients'])):
-                ingredient = Ingredient.getIngredientByName(data['ingredients'][x])
-                if not ingredient:
-                    info = {
-                        'name' : data['ingredients'][x],
-                        'spoonacular_id' : data['spoonacular_id'][x]
-                    }
-                    new_ingredient_id = Ingredient.addIngredient(info)
-                    
-                
+                ingredient_id = Ingredient.findIngredientElseAdd(data['ingredients'][x])
+        
                 details = {
                     'recipe_id' : recipe_id,
+                    'ingredient_id' : ingredient_id,
                     'quantity' : data['quantity'][x],
                     'quantity_type' : data['quantity_type'][x]
                 }
-                if ingredient:
-                    details['ingredient_id'] = ingredient.id
-                else: 
-                    details['ingredient_id'] = new_ingredient_id
                     
                 Ingredient.addIngredientToRecipe(details)
-
-                print(data['ingredients'][x])
-                print(data['quantity'][x])
-                print(data['quantity_type'][x])
-
         return recipe_id
 
     @staticmethod
@@ -78,36 +63,9 @@ class Recipe:
         MySQLConnection().query_db(query)
 
         Cuisine.updateRecipesCuisines(data['recipe_id'], data['cuisines'])
-
-        #Adds new Ingredient connections
-        for x in range(len(data['ingredients'])):
-            ingredient = Ingredient.getIngredientByName(data['ingredients'][x])
-            if not ingredient:
-                info = {
-                    'name' : data['ingredients'][x],
-                    'spoonacular_id' : data['spoonacular_id'][x]
-                }
-                new_ingredient_id = Ingredient.addIngredient(info)
-                
-            
-            details = {
-                'recipe_id' : data['recipe_id'],
-                'quantity' : data['quantity'][x],
-                'quantity_type' : data['quantity_type'][x]
-            }
-            
-            if ingredient:
-                details['ingredient_id'] = ingredient.id
-            else: 
-                details['ingredient_id'] = new_ingredient_id
-                
-            Ingredient.addIngredientToRecipe(details)
-
-            print(data['ingredients'][x])
-            print(data['quantity'][x])
-            print(data['quantity_type'][x])
-
-        return 1
+        Ingredient.updateRecipeIngredients(data)
+    
+        return 0
     
     @classmethod
     def getRecipeById(cls, id):

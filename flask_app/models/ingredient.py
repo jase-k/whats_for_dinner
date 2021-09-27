@@ -37,16 +37,28 @@ class Ingredient:
         return id
 
     @classmethod
+    def findIngredientElseAdd(cls, ingredient_name, spoonacular_id = 0) -> int:
+        id = cls.getIngredientByName(ingredient_name)
+        if not id:
+
+            info = {
+                'name' : ingredient_name,
+                'spoonacular_id' : spoonacular_id
+            }
+            id = cls.addIngredient(info)
+        return id
+
+    @classmethod
     def getIngredientByName(cls, name):
         query = f'SELECT * from ingredients WHERE name = "{name}"'
 
         data = MySQLConnection().query_db(query)
+        print("INGREDIENT FOUND: ", data)
 
         if data:
-            print("THIS INGREDIENT EXISTS!")
-            return cls(data[0])
+            return data[0]['id']
         else:
-            return {}
+            return False
 
     @classmethod
     def addIngredientToRecipe(cls, data):
@@ -55,15 +67,7 @@ class Ingredient:
         id = MySQLConnection().query_db(query, data)
 
         return id
-    
-    @staticmethod
-    def getRecipesIngredients(recipe_id, ingredient_id):
-        query = f"SELECT * FROM recipes_ingredients WHERE recipe_id = {recipe_id} AND ingredient_id = {ingredient_id}"
 
-        results = MySQLConnection().query_db(query)[0]
-
-        return results
-    
     @classmethod
     def getAllRecipeIngredients(cls, recipe_id):
         query = f"SELECT * FROM ingredients JOIN recipes_ingredients ON recipes_ingredients.ingredient_id = ingredients.id WHERE recipe_id = {recipe_id}"
@@ -76,6 +80,30 @@ class Ingredient:
             for row in db_results:
                 ingredients.append(cls(row))
         return ingredients
+    
+    @classmethod
+    def updateRecipeIngredients(cls, data):
+        cls.deleteRecipeIngrients(data['recipe_id'])
         
-        
+        for x  in range(len(data['ingredients'])):
+            #Adds Ingredient to our database if not currently there
+            ingredient_id = cls.findIngredientElseAdd(data['ingredients'][x], data['spoonacular_id'][x])
+            
+            ing_data = {
+                "recipe_id" : data['recipe_id'],
+                "ingredient_id" : ingredient_id,
+                'quantity' : data['quantity'][x],
+                'quantity_type' : data['quantity_type'][x]
+            }
 
+            cls.addIngredientToRecipe(ing_data)
+        
+        return 0
+
+    @staticmethod
+    def deleteRecipeIngrients(recipe_id):
+        query = f"DELETE FROM recipes_ingredients WHERE recipe_id = {recipe_id}"
+
+        MySQLConnection().query_db(query)
+
+        return 0

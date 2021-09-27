@@ -4,8 +4,8 @@
 1. Have the favorite button on view_recipe to toggle favoriting and unfavoriting a recipe
 2. Get the favorite recipe button to show up on the browse recipes
 Add Cuisine Types to Database and Add/Edit Recipe
+Fix Update/Add Recipe Code Structure
 -> 
-Fix Update Recipe Code Structure
 Add diet types as a function of recipes
 Add image to Recipe
 Add source attribute to recipes: e.g.(Website it comes from vs What's for Dinner Platform)
