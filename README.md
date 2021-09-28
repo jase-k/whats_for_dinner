@@ -5,8 +5,10 @@
 2. Get the favorite recipe button to show up on the browse recipes
 Add Cuisine Types to Database and Add/Edit Recipe
 Fix Update/Add Recipe Code Structure
--> 
 Add image to Recipe
+-> 
+Delete image from Recipe if image owner
+See all Uploaded images
 Add source attribute to recipes: e.g.(Website it comes from vs What's for Dinner Platform)
 Add diet types as a function of recipes
 Add Weight Watchers Score
