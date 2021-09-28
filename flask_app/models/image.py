@@ -28,22 +28,23 @@ class Image:
 
 
     @staticmethod
-    def insertImageToDB(data):
+    def insertImageToDB(user_id, file):
+    # def insertImageToDB(data):
         #Get last id of image database
         query = "SELECT id FROM images ORDER BY id DESC LIMIT 1"
         last_image_id = MySQLConnection().query_db(query)
 
         #protects from an error if no other photos are in the database
         if not len(last_image_id) == 0:
-            filename = f"{data['id']}-{last_image_id[0]['id']+1}.png"
+            filename = f"{user_id}-{last_image_id[0]['id']+1}.png"
         else: 
-            filename = f"{data['id']}-{1}.png"
+            filename = f"{user_id}-{1}.png"
             
 
         #Stores profile_picture on disk and saves file path
         cwd = os.getcwd()
-        print("CURRENT DIRECTORY BEFORE CHANGE: ", os.getcwd()+f"/flask_app/static/imgs/usercontent/{data['id']}/")
-        filepath =  os.getcwd()+f"/flask_app/static/imgs/usercontent/{data['id']}/"
+        print("CURRENT DIRECTORY BEFORE CHANGE: ", os.getcwd()+f"/flask_app/static/imgs/usercontent/{user_id}/")
+        filepath =  os.getcwd()+f"/flask_app/static/imgs/usercontent/{user_id}/"
         if not os.path.exists(filepath):
             os.chdir(os.getcwd()+f"/flask_app/static/imgs/usercontent/")
             print("CURRENT DIRECTORY durring CHANGE: ", os.getcwd())
@@ -55,10 +56,10 @@ class Image:
         filepath = os.path.join(filepath, filename).replace('\\', '/') #filepath comes back with both '/'s and '\'s. We need to replace them to match and be used by html files. 
 
         print('FILEPATH: ', filepath)
-        data['profile_picture'].save(filepath)
+        file.save(filepath)
 
         #Insert Image to Database
-        query = f"INSERT INTO images(created_at, updated_at, owner_user_id, file_path) VALUES(NOW(), NOW(), {data['id']}, '{filepath}')"
+        query = f"INSERT INTO images(created_at, updated_at, owner_user_id, file_path) VALUES(NOW(), NOW(), {user_id}, '{filepath}')"
         id = MySQLConnection().query_db(query)
 
         return id
@@ -104,3 +105,15 @@ class Image:
             
 
             return cls(data)
+    
+    @classmethod
+    def getRecipeImages(cls, recipe_id):
+        query = f"SELECT * FROM images JOIN recipes_images ON images.id = recipes_images.image_id WHERE recipes_images.recipe_id = {recipe_id}"
+
+        db_data = MySQLConnection().query_db(query)
+
+        images = []
+        for row in db_data:
+            images.append(cls(row))
+
+        return images

@@ -17,9 +17,10 @@ class Recipe:
         self.premium = data['premium']
         self.cuisines = Cuisine.getRecipeCuisines(data['id'])
         self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
+        self.images = Image.getRecipeImages(data['id'])
 
     def __str__(self) -> str:
-        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}"
+        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}, images: {self.images}"
     
     def is_favorite(self, array):
         is_valid = False
@@ -29,8 +30,8 @@ class Recipe:
         return is_valid
         
 
-    @staticmethod
-    def addRecipe(data):
+    @classmethod
+    def addRecipe(cls, data):
         query = "INSERT INTO recipes (created_at, updated_at, creator_id, title, instructions, premium, description) VALUES(NOW(), NOW(), %(user_id)s, %(title)s, %(instructions)s, %(premium)s, %(description)s)"
 
         recipe_id = MySQLConnection().query_db(query, data)
@@ -50,10 +51,21 @@ class Recipe:
                 }
                     
                 Ingredient.addIngredientToRecipe(details)
+        
+        cls.addImagesToRecipe(data['images'])
+
         return recipe_id
 
     @staticmethod
-    def updateRecipe(data):
+    def connectImageToRecipe(recipe_id, image_id):
+        query = f"INSERT INTO recipes_images (updated_at, recipe_id, image_id) VALUES (NOW(), {recipe_id}, {image_id})"
+
+        id = MySQLConnection().query_db(query)
+
+        return id
+
+    @classmethod
+    def updateRecipe(cls, data):
         #Updates the Recipe
         query = "UPDATE recipes SET updated_at = NOW(),  title = %(title)s, instructions= %(instructions)s, premium = %(premium)s, description =%(description)s  WHERE id = %(recipe_id)s"
 
@@ -64,9 +76,18 @@ class Recipe:
 
         Cuisine.updateRecipesCuisines(data['recipe_id'], data['cuisines'])
         Ingredient.updateRecipeIngredients(data)
+        cls.addImagesToRecipe(data['images'], data['user_id'], data['recipe_id'])
     
         return 0
-    
+
+    @classmethod
+    def addImagesToRecipe(cls, image_array, user_id, recipe_id):
+        for image in image_array:
+            image_id = Image.insertImageToDB(user_id, image)
+            #Adds connecting row to recipes_images
+            cls.connectImageToRecipe(recipe_id, image_id)
+        return 0
+
     @classmethod
     def getRecipeById(cls, id):
         #Join User info, reviews

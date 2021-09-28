@@ -12,7 +12,7 @@
     <h2>Add a Recipe</h2>
     <hr>
     {% with messages = get_flashed_messages(True) %}
-    <form action="/add_recipe/new" method="POST">
+    <form action="/add_recipe/new" method="POST"  enctype="multipart/form-data">
         <input type="hidden" name='user_id' value="{{user.id}}">
         <div class="form_row mb-2">
             <label class="h4" for="title">Recipe Title: </label>
@@ -81,6 +81,17 @@
             <input type="radio" value="1" name="premium" id="premium_true" class="radio">
             <label class="h6" for="premium_false">False</label>
             <input type="radio" value="0" name="premium" id="premium_false" class="radio" checked>
+        </div>
+        <div class="form_row mb-2">
+            <label class="h6" for="image">Recipe Image</label>
+            <input type="file" id="image" name="image" multiple>
+        {% for category, message in messages %}
+            {% if category == 'image' %}
+                <p class="flash_warning h6">
+                    {{message}}
+                </p>
+            {% endif %}
+        {% endfor %}
         </div>
         <div id='ingredient_list' class="hidden">
         </div>

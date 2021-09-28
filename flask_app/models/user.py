@@ -219,7 +219,7 @@ class User():
         #checks for validation
         is_valid = cls.validateUser(data)
 
-        data['profile_image_id'] = Image.insertImageToDB(data)
+        data['profile_image_id'] = Image.insertImageToDB(data['id'], data['profile_picture'])
 
         #Update user in database
         MySQLConnection().query_db(query, data)

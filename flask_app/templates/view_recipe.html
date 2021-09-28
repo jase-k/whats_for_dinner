@@ -36,6 +36,12 @@
     <legend>Description</legend>
     <p>{{recipe.description}}</p>
 </fieldset>
+<h3>Images:</h3>
+<div class="image_container">
+    {% for image in recipe.images %}
+        <img src="{{url_for('static', filename=''+image.file_path)}}" alt="{{recipe.name}} image">
+    {% endfor %}
+</div>
 <!-- Created By -->
 <fieldset>
     <legend>Created By:</legend>

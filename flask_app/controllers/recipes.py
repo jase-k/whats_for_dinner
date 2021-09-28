@@ -58,8 +58,11 @@ def addRecipeToDB():
         'quantity' : request.form.getlist('quantity'),
         'premium' : request.form['premium'],
         'quantity_type' : request.form.getlist('quantity_type'),
-        'spoonacular_id' : request.form.getlist('spoonacular_id')
+        'spoonacular_id' : request.form.getlist('spoonacular_id'), 
+        'images' : request.files.getlist('image')
     }
+    for image in data['images']:
+        print('one image')
     print('DATA', data)
 
     is_valid = Recipe.validateRecipe(data)
@@ -100,7 +103,8 @@ def updateRecipe():
         'quantity' : request.form.getlist('quantity'),
         'premium' : request.form['premium'],
         'quantity_type' : request.form.getlist('quantity_type'),
-        'spoonacular_id' : request.form.getlist('spoonacular_id')
+        'spoonacular_id' : request.form.getlist('spoonacular_id'),
+        'images' : request.files.getlist('image')
     }
     print('DATA', data)
     is_valid = Recipe.validateRecipe(data)
