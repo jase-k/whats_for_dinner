@@ -38,17 +38,19 @@ class ProfileImage(Image):
     def deleteImage(cls, image_id):
         image = cls.getImageById(image_id)
 
-        #Deletes from Server Files
-        os.remove(os.path.join(os.getcwd()+"/flask_app/static", image.file_path))
-
         #Deletes from DataBase
         query = f"DELETE FROM profile_images WHERE id = {image.id}"
+
+        #Deletes from Server Files #Returning 0 means it's returnning the default photo and shouldn't be deleted.
+        if not image.id == 0:
+            os.remove(os.path.join(os.getcwd()+"/flask_app/static", image.file_path))
+
         MySQLConnection().query_db(query)
 
 
     @staticmethod
     def insertImageToDB(user_id, file):
-    # def insertImageToDB(data):
+    
         #Get last id of image database
         query = "SELECT id FROM profile_images ORDER BY id DESC LIMIT 1"
         last_image_id = MySQLConnection().query_db(query)
@@ -97,7 +99,7 @@ class ProfileImage(Image):
         else: 
             filepath = os.getcwd()+"/flask_app/static/imgs/user/profile_holder.png"
             data = {
-                'id' : None,
+                'id' : 0,
                 'created_at' : None,
                 'updated_at' : None,
                 'user_id' : None,
