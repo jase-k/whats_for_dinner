@@ -4,6 +4,7 @@ from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.recipe import Recipe
 from flask_app.models.cuisine import Cuisine
+from flask_app.models.image import RecipeImage
 
 
 
@@ -18,6 +19,12 @@ def displayRecipe(id):
         return render_template('view_recipe.html', recipe = recipe, user = user, creator = creator) 
     else:
         return 'False'
+
+@app.route('/recipes/<int:recipe_id>/delete_photo', methods = ["POST"])
+def deletePhotoFromRecipe(recipe_id):
+    photo_id = request.form['photo_id']
+    RecipeImage.deleteImage(photo_id)
+    return redirect(f'/recipes/{recipe_id}')
 
 @app.route('/recipes/<int:recipe_id>/favorite')
 def favoriteARecipe(recipe_id):

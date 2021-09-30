@@ -6,16 +6,12 @@ var delete_form = document.getElementById('delete_photo')
 var dropdown_menu = document.getElementById('dropdown')
 var menu_button = document.getElementById('menu_bar')
 console.log(cancel_button)
-cancel_button.addEventListener("click", hideDeleteForm)
-profile_pic.addEventListener("click", showDeleteForm)
+profile_pic.addEventListener("click", toggleDeleteForm)
 menu_button.addEventListener("click", toggleDropDown)
 
-function showDeleteForm(){
-    delete_form.classList = ['']
-}
 
-function hideDeleteForm(){
-    delete_form.classList = ['hidden']
+function toggleDeleteForm(){
+    delete_form.classList.toggle('hidden')
 }
 
 function toggleDropDown(){

@@ -1,4 +1,4 @@
-.image_container {
+.image_flex_container {
     display: flex;
     flex-wrap: wrap;
 }

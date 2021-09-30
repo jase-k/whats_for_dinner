@@ -1,8 +1,7 @@
-from flask_app.models.image import Image
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request, session
 from flask_app.models.ingredient import Ingredient
-from flask_app.models.image import Image
+from flask_app.models.image import RecipeImage
 from flask_app.models.cuisine import Cuisine
 
 class Recipe:
@@ -17,7 +16,7 @@ class Recipe:
         self.premium = data['premium']
         self.cuisines = Cuisine.getRecipeCuisines(data['id'])
         self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
-        self.images = Image.getRecipeImages(data['id'])
+        self.images = RecipeImage.getRecipeImages(data['id'])
 
     def __str__(self) -> str:
         return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}, images: {self.images}"
@@ -56,14 +55,6 @@ class Recipe:
 
         return recipe_id
 
-    @staticmethod
-    def connectImageToRecipe(recipe_id, image_id):
-        query = f"INSERT INTO recipes_images (updated_at, recipe_id, image_id) VALUES (NOW(), {recipe_id}, {image_id})"
-
-        id = MySQLConnection().query_db(query)
-
-        return id
-
     @classmethod
     def updateRecipe(cls, data):
         #Updates the Recipe
@@ -83,9 +74,8 @@ class Recipe:
     @classmethod
     def addImagesToRecipe(cls, image_array, user_id, recipe_id):
         for image in image_array:
-            image_id = Image.insertImageToDB(user_id, image)
-            #Adds connecting row to recipes_images
-            cls.connectImageToRecipe(recipe_id, image_id)
+            image_id = RecipeImage.insertImageToDB(user_id, recipe_id, image)
+
         return 0
 
     @classmethod

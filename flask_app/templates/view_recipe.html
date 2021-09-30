@@ -37,9 +37,15 @@
     <p>{{recipe.description}}</p>
 </fieldset>
 <h3>Images:</h3>
-<div class="image_container">
+<div class="image_flex_container">
     {% for image in recipe.images %}
-        <img src="{{url_for('static', filename=''+image.file_path)}}" alt="{{recipe.name}} image">
+    <div class="image_container">
+        <img src="{{url_for('static', filename=''+image.file_path)}}" alt="{{recipe.name}} image" class="recipe_photo">
+        <form action="/recipes/{{recipe.id}}/delete_photo" method='POST' id="delete_photo" class="hidden">
+            <input type="hidden" name='photo_id' value="{{image.id}}">
+            <button id="delete_photo_button" type="submit">Delete?</button>
+        </form>
+        </div>
     {% endfor %}
 </div>
 <!-- Created By -->
@@ -79,4 +85,6 @@
 <h5>Ask a Question</h5>
 <h5>Add Photo</h5>
 <h5>Comments:</h5>
+
+<script src="{{url_for('static', filename='js/view_recipe.js')}}"></script>
 {% endblock %}

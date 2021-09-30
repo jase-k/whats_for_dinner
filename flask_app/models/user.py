@@ -1,7 +1,7 @@
 
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, session, jsonify, request
-from flask_app.models.image import Image
+from flask_app.models.image import ProfileImage
 from flask_app.models.recipe import Recipe
 import os
 import bcrypt
@@ -21,7 +21,7 @@ class User():
         self.menu_id = data['menu_id']
         self.shopping_list_id = data['shopping_list_id']
         self.profile_image_id = data['profile_image_id']
-        self.profile_image = Image.getProfileImage(data['profile_image_id'])
+        self.profile_image = ProfileImage.getImageById(data['profile_image_id'])
         self.favorites = Recipe.getFavoriteRecipes(data['id'])
         
 
@@ -76,7 +76,7 @@ class User():
     @classmethod
     def getUserById(cls, id):
         
-        query = f"SELECT * FROM users LEFT JOIN images ON profile_image_id = images.id WHERE users.id = {id}"
+        query = f"SELECT * FROM users WHERE users.id = {id}"
 
         user_fromDB = MySQLConnection().query_db(query)
 
@@ -187,6 +187,7 @@ class User():
             is_valid = False
         return is_valid
     
+    ##Should be in ProfileImage Class
     @staticmethod
     def validateProfilePhoto(data):
         is_valid = True
@@ -219,7 +220,7 @@ class User():
         #checks for validation
         is_valid = cls.validateUser(data)
 
-        data['profile_image_id'] = Image.insertImageToDB(data['id'], data['profile_picture'])
+        data['profile_image_id'] = ProfileImage.insertImageToDB(data['id'], data['profile_picture'])
 
         #Update user in database
         MySQLConnection().query_db(query, data)
