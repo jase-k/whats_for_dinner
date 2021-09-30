@@ -38,8 +38,6 @@ class ProfileImage(Image):
     def deleteImage(cls, image_id):
         image = cls.getImageById(image_id)
 
-        image = image[0]
-
         #Deletes from Server Files
         os.remove(os.path.join(os.getcwd()+"/flask_app/static", image.file_path))
 
