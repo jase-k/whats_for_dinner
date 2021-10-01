@@ -18,9 +18,10 @@ class Recipe:
         self.cuisines = Cuisine.getRecipeCuisines(data['id'])
         self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
         self.images = RecipeImage.getRecipeImages(data['id'])
+        self.recipe_types = Recipe.getRecipesTypes(data['id'])
 
     def __str__(self) -> str:
-        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}, images: {self.images}"
+        return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}, images: {self.images}, recipe_types: {self.recipe_types}"
     
     def is_favorite(self, array):
         is_valid = False
@@ -28,7 +29,12 @@ class Recipe:
             if self.id == x.id:
                 is_valid = True
         return is_valid
-        
+    
+    def has_recipe_type(self, type):
+        for recipe_type in self.recipe_types:
+            if type['name'] == recipe_type['name']:
+                return True
+        return False
 
     @classmethod
     def addRecipe(cls, data):
@@ -69,6 +75,7 @@ class Recipe:
         Cuisine.updateRecipesCuisines(data['recipe_id'], data['cuisines'])
         Ingredient.updateRecipeIngredients(data)
         cls.addImagesToRecipe(data['images'], data['user_id'], data['recipe_id'])
+        cls.addRecipeTypesToRecipe(data['recipe_types'], data['recipe_id']) #recipe_types is an array
     
         return 0
 
@@ -191,3 +198,33 @@ class Recipe:
         query = "SELECT * FROM recipe_types"
 
         return MySQLConnection().query_db(query)
+
+    @staticmethod
+    def getRecipesTypes(recipe_id):
+        query = f"SELECT * FROM recipes_recipe_types LEFT JOIN recipe_types ON recipe_type_id = recipe_types.id WHERE recipe_id = {recipe_id}"
+
+        db_data = MySQLConnection().query_db(query)
+        recipe_types = []
+
+        for row in db_data:
+            recipe_type = {
+                'name' : row['name'],
+                'description' : row['description']
+            }
+            recipe_types.append(recipe_type)
+
+        return recipe_types
+
+    @staticmethod
+    def addRecipeTypesToRecipe(type_array , recipe_id):
+        query = f"DELETE FROM recipes_recipe_types WHERE recipe_id = {recipe_id}"
+        MySQLConnection().query_db(query)
+        
+        ids = []
+        for type_id in type_array:
+            query = f"INSERT INTO recipes_recipe_types (recipe_id, recipe_type_id) VALUES ({recipe_id}, {type_id})"
+
+            id = MySQLConnection().query_db(query)
+            ids.append(id)
+
+        return ids

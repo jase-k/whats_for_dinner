@@ -94,7 +94,11 @@
         <div id="recipe_types" class="form_row">
             <h3>Recipe Types: </h3>
             {% for type in recipe_types%}
-                <input type="checkbox" value="{{type.id}}" name="recipe_types" id="{{type.name}}{{type.id}}">
+                <input type="checkbox" value="{{type.id}}" name="recipe_types" id="{{type.name}}{{type.id}}"
+                {% if recipe.has_recipe_type(type) %}
+                    checked
+                {% endif %}
+                >
                 <label for="{{type.name}}{{type.id}}">{{type.name}}</label>
             {% endfor %}
         </div>

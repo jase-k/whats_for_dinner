@@ -17,7 +17,7 @@ def displayRecipe(id):
     creator = User.getUserById(recipe.creator_id)
 
     recipe_types = Recipe.getAllRecipeTypes()
-    print("RECIPE TYPES: ", recipe_types)
+    print("RECIPE ", recipe)
     if recipe: 
         return render_template('view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types) 
     else:
@@ -107,7 +107,7 @@ def showEditRecipe(id):
 
 @app.route('/update_recipe', methods=['POST'])
 def updateRecipe():
-    data ={
+    data = {
         'user_id': session['user_id'],
         'recipe_id' : request.form['recipe_id'],
         'title' : request.form['title'],
@@ -119,8 +119,10 @@ def updateRecipe():
         'premium' : request.form['premium'],
         'quantity_type' : request.form.getlist('quantity_type'),
         'spoonacular_id' : request.form.getlist('spoonacular_id'),
-        'images' : request.files.getlist('image')
+        'images' : request.files.getlist('image'),
+        'recipe_types' : request.form.getlist('recipe_types')
     }
+
     print('DATA', data)
     is_valid = Recipe.validateRecipe(data)
     print("ISVALID: ", is_valid)
