@@ -30,6 +30,11 @@ class Image(ABC):
     def insertImageToDB(data):
         pass #Should Save image to server files and add file path to the database
 
+    @classmethod
+    @abstractmethod
+    def getImagesByCreator(creator_id):
+        pass #Should return an Array of image instances
+
 class ProfileImage(Image):
     def __init__(self, data):
         super().__init__(data)
@@ -107,6 +112,16 @@ class ProfileImage(Image):
             }
             return cls(data)
 
+    @classmethod
+    def getImagesByCreator(cls, creator_id):
+        query = f"SELECT * FROM profile_images WHERE user_id = {creator_id}"
+        db_data = MySQLConnection().query_db(query)
+
+        images = []
+        for row in db_data:
+            images.append(cls(row))
+
+        return images
 
 
 class RecipeImage(Image):
@@ -184,3 +199,15 @@ class RecipeImage(Image):
             images.append(cls(row))
 
         return images
+    
+    @classmethod
+    def getImagesByCreator(cls, creator_id):
+        query = f"SELECT * FROM recipe_images WHERE user_id = {creator_id}"
+        db_data = MySQLConnection().query_db(query)
+
+        images = []
+        for row in db_data:
+            images.append(cls(row))
+
+        return images
+

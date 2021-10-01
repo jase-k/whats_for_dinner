@@ -24,6 +24,8 @@ def displayRecipe(id):
 def deletePhotoFromRecipe(recipe_id):
     photo_id = request.form['photo_id']
     RecipeImage.deleteImage(photo_id)
+    if 'url' in session: 
+        return redirect(session['url'])
     return redirect(f'/recipes/{recipe_id}')
 
 @app.route('/recipes/<int:recipe_id>/favorite')
