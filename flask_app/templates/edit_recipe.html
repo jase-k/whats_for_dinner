@@ -91,6 +91,13 @@
                     <label for="{{cuisine.name}}{{cuisine.id}}">{{cuisine.name}}</label>
                 {% endfor %}
         </div>
+        <div id="recipe_types" class="form_row">
+            <h3>Recipe Types: </h3>
+            {% for type in recipe_types%}
+                <input type="checkbox" value="{{type.id}}" name="recipe_types" id="{{type.name}}{{type.id}}">
+                <label for="{{type.name}}{{type.id}}">{{type.name}}</label>
+            {% endfor %}
+        </div>
         <label for='image'>Images:</label>
         <input type="file" id="image" name="image" multiple>
         <div class="image_container">

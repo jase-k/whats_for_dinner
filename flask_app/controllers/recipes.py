@@ -1,3 +1,4 @@
+from os import path
 from flask_app.models.recipe import Recipe
 from flask import redirect, request, session, render_template
 from flask_app import app
@@ -15,8 +16,10 @@ def displayRecipe(id):
 
     creator = User.getUserById(recipe.creator_id)
 
+    recipe_types = Recipe.getAllRecipeTypes()
+    print("RECIPE TYPES: ", recipe_types)
     if recipe: 
-        return render_template('view_recipe.html', recipe = recipe, user = user, creator = creator) 
+        return render_template('view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types) 
     else:
         return 'False'
 
@@ -68,7 +71,8 @@ def addRecipeToDB():
         'premium' : request.form['premium'],
         'quantity_type' : request.form.getlist('quantity_type'),
         'spoonacular_id' : request.form.getlist('spoonacular_id'), 
-        'images' : request.files.getlist('image')
+        'images' : request.files.getlist('image'),
+        'source' : "What's For Dinner User Original"
     }
     for image in data['images']:
         print('one image')
@@ -95,9 +99,11 @@ def showEditRecipe(id):
     user = User.getUserById(session['user_id'])
     recipe = Recipe.getRecipeById(id)
     cuisines = Cuisine.getAllCuisines()
+    recipe_types = Recipe.getAllRecipeTypes()
+
     print(recipe)
 
-    return render_template('edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines)
+    return render_template('edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines, recipe_types = recipe_types)
 
 @app.route('/update_recipe', methods=['POST'])
 def updateRecipe():

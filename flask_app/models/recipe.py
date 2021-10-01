@@ -14,6 +14,7 @@ class Recipe:
         self.instructions = data['instructions']
         self.description = data['description']
         self.premium = data['premium']
+        self.source = data['source']
         self.cuisines = Cuisine.getRecipeCuisines(data['id'])
         self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
         self.images = RecipeImage.getRecipeImages(data['id'])
@@ -31,14 +32,14 @@ class Recipe:
 
     @classmethod
     def addRecipe(cls, data):
-        query = "INSERT INTO recipes (created_at, updated_at, creator_id, title, instructions, premium, description) VALUES(NOW(), NOW(), %(user_id)s, %(title)s, %(instructions)s, %(premium)s, %(description)s)"
+        query = "INSERT INTO recipes (created_at, updated_at, creator_id, title, instructions, premium, description, source) VALUES(NOW(), NOW(), %(user_id)s, %(title)s, %(instructions)s, %(premium)s, %(description)s, %(source)s)"
 
         recipe_id = MySQLConnection().query_db(query, data)
 
-        for cuisine in data['cuisines']:
-            Cuisine.addCuisineToRecipe(recipe_id, cuisine)
-
         if recipe_id:
+            for cuisine in data['cuisines']:
+                Cuisine.addCuisineToRecipe(recipe_id, cuisine)
+
             for x in range(len(data['ingredients'])):
                 ingredient_id = Ingredient.findIngredientElseAdd(data['ingredients'][x])
         
@@ -51,7 +52,7 @@ class Recipe:
                     
                 Ingredient.addIngredientToRecipe(details)
         
-        cls.addImagesToRecipe(data['images'])
+            cls.addImagesToRecipe(data['images'], data['user_id'], recipe_id)
 
         return recipe_id
 
@@ -178,8 +179,15 @@ class Recipe:
                 "instructions" : row['instructions'],
                 "description" : row['description'],
                 "premium" : row['premium'],
+                "source" : row['source']
             }
 
             recipes.append(cls(data))
 
         return recipes
+
+    @staticmethod
+    def getAllRecipeTypes():
+        query = "SELECT * FROM recipe_types"
+
+        return MySQLConnection().query_db(query)

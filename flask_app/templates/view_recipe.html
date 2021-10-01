@@ -54,6 +54,10 @@
     <p>{{creator.first_name }} {{creator.last_name }}</p>
     <img src='{{url_for("static", filename=""+creator.profile_image.file_path)}}' alt='{{creator.first_name }} {{creator.last_name }}"profile picture' class="profile_image">
 </fieldset>
+<div>
+    <h3>Source:</h3>
+    <p>{{recipe.source}}</p>
+</div>
 <!-- Get Recipe Details Facts -->
 <fieldset>
     <legend>Instructions</legend>
