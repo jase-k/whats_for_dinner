@@ -15,6 +15,7 @@ def displayRecipe(id):
     user = User.getUserById(session['user_id'])
 
     creator = User.getUserById(recipe.creator_id)
+    session['url'] = request.url
 
     recipe_types = Recipe.getAllRecipeTypes()
     print("RECIPE ", recipe)

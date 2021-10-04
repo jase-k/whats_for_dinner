@@ -4,11 +4,20 @@
 {% endblock %}
 {% block content %}
 
+
 {% if user.id == creator.id %}
 <form action="/edit_recipe/{{recipe.id}}">
     <button type='submit'> Edit? </button>
 </form>
 {% endif %}
+
+{% with messages = get_flashed_messages(True) %}
+{% for category, message in messages %}
+{% if category == 'images' %}
+    <p>{{message}}</p>
+{% endif %}
+{% endfor %}
+{% endwith %}
 
 <h2>{{ recipe.title}}</h2>
 

@@ -34,6 +34,26 @@ class Image(ABC):
     @abstractmethod
     def getImagesByCreator(creator_id):
         pass #Should return an Array of image instances
+        #Returns an array with the valid images. prints an alert and removes image from array if doesn't meet qualification. 
+
+    @staticmethod
+    def validateImages(image_array):
+        is_valid = True
+        valid_extensions = ['png', 'jpg', 'jpeg']
+        for image in list(image_array):
+            if image.filename == '':
+                print("Empty File Detected")
+                image_array.remove(image)
+                continue
+            
+            if image.filename.rsplit('.', 1)[1] not in valid_extensions:
+                print("Impropper File Extension found!")
+                flash("Image Upload Failed. Please only use '.jpg', '.png', or '.jpeg' files", 'images')
+                image_array.remove(image)
+                continue
+
+        print("Image Array After Validation: ", image_array)
+        return image_array
 
 class ProfileImage(Image):
     def __init__(self, data):
@@ -210,4 +230,6 @@ class RecipeImage(Image):
             images.append(cls(row))
 
         return images
+
+
 

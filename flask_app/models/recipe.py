@@ -1,7 +1,7 @@
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request, session
 from flask_app.models.ingredient import Ingredient
-from flask_app.models.image import RecipeImage
+from flask_app.models.image import Image, RecipeImage
 from flask_app.models.cuisine import Cuisine
 
 class Recipe:
@@ -81,6 +81,7 @@ class Recipe:
 
     @classmethod
     def addImagesToRecipe(cls, image_array, user_id, recipe_id):
+        image_array = RecipeImage.validateImages(image_array)
         for image in image_array:
             image_id = RecipeImage.insertImageToDB(user_id, recipe_id, image)
 
