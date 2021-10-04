@@ -12,12 +12,14 @@ Add source attribute to recipes: e.g.(Website it comes from vs What's for Dinner
 
 # Generate Meal Plan for the Week
 Add recipe type on Upate and ADD recipe methods
+Add recipe type ['main', 'side', 'dessert', 'snack', 'breakfast', 'brunch', 'special occasion'] 
 Show Recipe Types and Cuisines on View Recipe View
 *Fix Image holder getting added to DB and Server when user doesn't add a file*
--> 
-Add recipe type ['main', 'side', 'dessert', 'snack', 'breakfast', 'brunch', 'special occasion'] 
 Add recipe from spoonacular API into database when favoriting a recipe
 Have the browse recipes favorite button save to the database if not already there. 
+Show 'unfavorite' button for recipes already in favorites
+-> 
+be able to unfavorite recipe from preferences
 Add Meals to Recipe Relationship
 Add mealtypes ['lunch', 'dinner', 'snack', etc.]
 Add User Menu's Functionality (Ability to Swap out Meals or Randomize one)

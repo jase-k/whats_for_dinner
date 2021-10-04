@@ -232,4 +232,39 @@ class RecipeImage(Image):
         return images
 
 
+class SpoonacularImage(ABC): 
+    def __init__(self, data): 
+        self.id = data['id']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
+        self.user_id = data['user_id']
+        self.file_path = os.path.relpath(data['file_path'],  os.getcwd()+"/flask_app/static").replace('\\', '/')
+    
+    def __str__(self) -> str:
+        return f"IMAGE INSTANCE STARTS:id: {self.id}, \n created_at: {self.created_at}, updated_at: {self.updated_at}, user_id = {self.user_id}, \n file_path: {self.file_path} $IMAGE INSTANCE ENDS"
+
+    @classmethod
+    @abstractmethod
+    def deleteImage(cls, image_id):
+        pass #Should Delete from Database and Server Storage
+
+    @classmethod
+    @abstractmethod
+    def getImageById(image_id):
+        pass #Should retrieve the file path from the database and get the photo from storage. .. Returns and instance of Image
+
+    @staticmethod
+    @abstractmethod 
+    def insertImageToDB( recipe_id, filepath, user_id = 1):
+        #Insert Image to Database
+        query = f"INSERT INTO recipe_images(created_at, updated_at, user_id, recipe_id, file_path) VALUES(NOW(), NOW(), {user_id}, {recipe_id}, '{filepath}')"
+        id = MySQLConnection().query_db(query)
+
+        return id
+
+    @classmethod
+    @abstractmethod
+    def getImagesByCreator(creator_id):
+        pass #Should return an Array of image instances
+        #Returns an array with the valid images. prints an alert and removes image from array if doesn't meet qualification. 
 

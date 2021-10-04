@@ -1,11 +1,12 @@
 from os import path
-from flask_app.models.recipe import Recipe
+from flask_app.models.recipe import Recipe, SpoonacularRecipe
 from flask import redirect, request, session, render_template
 from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.recipe import Recipe
 from flask_app.models.cuisine import Cuisine
 from flask_app.models.image import RecipeImage
+import json
 
 
 
@@ -52,6 +53,18 @@ def unfavoriteARecipe(recipe_id):
 
     return redirect(f'/recipes/{recipe_id}')
 
+@app.route('/recipes/favorites')
+def getFavorites():
+    user = User.getUserById(session['user_id'])
+    favorite_ids = []
+    for recipe in user.favorites:
+        recipe_ids = {
+            "id" : recipe.id,
+            "spoonacular_id" : recipe.spoonacular_id
+        }
+        favorite_ids.append(recipe_ids)
+    return json.dumps(favorite_ids)
+
 @app.route('/add_recipe')
 def showAddRecipePage():
     user = User.getUserById(session['user_id'])
@@ -85,8 +98,20 @@ def addRecipeToDB():
         return redirect(f'/recipes/{id}')
     if not is_valid:
         return redirect('/add_recipe')
-    
-    
+
+@app.route('/favorite_spoonacular_recipe', methods=['Post'])
+def favoriteSpoonacularRecipe():
+    data = request.get_json()
+    recipe_id = SpoonacularRecipe.addRecipe(data)
+    if recipe_id:
+        return "sucess"
+    else:
+        return "fail"
+
+@app.route('/unfavorite_spoonacular_recipe', methods=['Post'])
+def unfavoriteSpoonacularRecipe():
+    pass
+
 
 @app.route('/browse_recipes')
 def showBrowse_Recipes():

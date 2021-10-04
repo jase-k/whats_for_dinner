@@ -1,10 +1,11 @@
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request, session
 from flask_app.models.ingredient import Ingredient
-from flask_app.models.image import Image, RecipeImage
+from flask_app.models.image import Image, RecipeImage, SpoonacularImage
 from flask_app.models.cuisine import Cuisine
+from abc import ABC, abstractclassmethod, abstractmethod
 
-class Recipe:
+class Recipe(ABC):
     def __init__(self, data) -> None:
         self.id = data['id']
         self.created_at = data['created_at']
@@ -19,6 +20,8 @@ class Recipe:
         self.ingredients = Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables
         self.images = RecipeImage.getRecipeImages(data['id'])
         self.recipe_types = Recipe.getRecipesTypes(data['id'])
+        self.spoonacular_id = data['spoonacular_id']
+
 
     def __str__(self) -> str:
         return f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, creator_id: {self.creator_id}, title: {self.title}, instructions: {self.instructions}, description: {self.description}, premium: {self.premium}, ingredients: {self.ingredients}, cuisines: {self.cuisines}, images: {self.images}, recipe_types: {self.recipe_types}"
@@ -187,7 +190,8 @@ class Recipe:
                 "instructions" : row['instructions'],
                 "description" : row['description'],
                 "premium" : row['premium'],
-                "source" : row['source']
+                "source" : row['source'],
+                "spoonacular_id" : row['spoonacular_id']
             }
 
             recipes.append(cls(data))
@@ -229,3 +233,102 @@ class Recipe:
             ids.append(id)
 
         return ids
+
+class UserRecipe(Recipe):
+    def __init__(self, data):
+        super().__init__(data)
+    
+
+
+class SpoonacularRecipe(Recipe):
+    def __init__(self, data):
+        super().__init__(data)
+        self.spoonacular_id = data['spoonacular_id']
+    
+
+    @classmethod
+    def addRecipe(cls, data):
+        #Check for Spoonacular Recipe in DB
+        existing_recipe = cls.getRecipeBySpoonacularId(data['spoonacular_id'])
+        if existing_recipe:
+            return existing_recipe.id
+        
+        data['description'] = data['description'].replace("'", "`")
+        
+        query = f"INSERT INTO recipes (created_at, updated_at, creator_id, title, instructions, premium, description, source, spoonacular_id) VALUES(NOW(), NOW(), 1, '{data['title']}', '{data['instructions']}', '0', '{data['description']}', '{data['source']}', {data['spoonacular_id']})"
+        print("Running query: ", query)
+        recipe_id = MySQLConnection().query_db(query)
+
+        if recipe_id:
+            for cuisine in data['cuisines']:
+                Cuisine.addCuisineToRecipe(recipe_id, Cuisine.getCuisineIdByName(cuisine))
+
+            for ingredient in data['ingredients']:
+                ingredient_id = Ingredient.findIngredientElseAdd(ingredient['name'], ingredient['spoonacular_id'])
+        
+                details = {
+                    'recipe_id' : recipe_id,
+                    'ingredient_id' : ingredient_id,
+                    'quantity' : ingredient['quantity'],
+                    'quantity_type' : ingredient['quantity_type']
+                }
+                    
+                Ingredient.addIngredientToRecipe(details)
+        
+            SpoonacularImage.insertImageToDB(recipe_id, data['image'])
+        
+        #Add Recipe_Type
+        recipe_types = cls.convertRecipeIds(data["recipe_types"])
+        cls.addRecipeTypesToRecipe(recipe_types, recipe_id)
+
+        #Add Recipe to Favorites
+        details = {
+            'user_id' : session['user_id'],
+            'recipe_id': recipe_id
+        }
+        super().favoriteARecipe(details)
+
+        return recipe_id
+
+    @staticmethod
+    def addRecipeTypesToRecipe(type_array , recipe_id):
+        query = f"DELETE FROM recipes_recipe_types WHERE recipe_id = {recipe_id}"
+        MySQLConnection().query_db(query)
+        
+        ids = []
+        for type_id in type_array:
+            query = f"INSERT INTO recipes_recipe_types (recipe_id, recipe_type_id) VALUES ({recipe_id}, {type_id})"
+
+            id = MySQLConnection().query_db(query)
+            ids.append(id)
+
+        return ids
+
+    @staticmethod
+    def convertRecipeIds(type_array):
+        type_ids = []
+        for type in type_array:
+            if "main" in type or "lunch" in type or "dinner" in type: 
+                type = "main"
+            if "side" in type: 
+                type = "side"
+            
+            query = f"SELECT * FROM recipe_types WHERE name = '{type}'"
+            db_data = MySQLConnection().query_db(query)
+            if db_data:
+                type_ids.append(db_data[0]['id'])
+        
+
+        return type_ids
+
+    @classmethod
+    def getRecipeBySpoonacularId(cls, id):
+        query = f"SELECT * FROM recipes WHERE spoonacular_id = {id}"
+        
+        raw_data = MySQLConnection().query_db(query)
+
+        if raw_data: 
+            recipe = cls(raw_data[0])
+            return recipe
+        else:
+            return False

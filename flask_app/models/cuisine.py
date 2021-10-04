@@ -61,5 +61,16 @@ class Cuisine:
         MySQLConnection().query_db(query)
 
         return 0
+    
+    @classmethod
+    def getCuisineIdByName(cls, name):
+        query = f"SELECT * FROM cuisines WHERE name = '{name}'"
+        
+        db_data = MySQLConnection().query_db(query)
+
+        if db_data:
+            return cls(db_data[0]).id
+        return 0
+    
 
     
