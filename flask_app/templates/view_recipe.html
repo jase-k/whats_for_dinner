@@ -58,11 +58,24 @@
     <h3>Source:</h3>
     <p>{{recipe.source}}</p>
 </div>
+<div class="form_row">
+    <label for="cuisines"><strong>Cuisines:</strong></label>
+        {% for cuisine in recipe.cuisines %}
+                <p>{{cuisine.name}}</p>
+        {% endfor %}
+</div>
+<div class="form_row">
+    <label for="recipe_types"><strong>Type of Recipe:</strong></label>
+        {% for type in recipe.recipe_types %}
+                <p>{{type.name}}</p>
+        {% endfor %}
+</div>
 <!-- Get Recipe Details Facts -->
 <fieldset>
     <legend>Instructions</legend>
     <p>{{recipe.instructions}}</p>
 </fieldset>
+
 <h3>Ingredients</h3>
 <table>
     <thead>

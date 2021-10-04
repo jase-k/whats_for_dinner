@@ -12,7 +12,8 @@ Add source attribute to recipes: e.g.(Website it comes from vs What's for Dinner
 
 # Generate Meal Plan for the Week
 Add recipe type on Upate and ADD recipe methods
--> Show Recipe Types and Cuisines on View Recipe View
+Show Recipe Types and Cuisines on View Recipe View
+-> 
 *Fix Image holder getting added to DB and Server when user doesn't add a file*
 Add recipe type ['main', 'side', 'dessert', 'snack', 'breakfast', 'brunch', 'special occasion'] 
 Add recipe from spoonacular API into database when favoriting a recipe
