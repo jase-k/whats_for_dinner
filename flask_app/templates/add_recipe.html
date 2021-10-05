@@ -82,6 +82,13 @@
             <label class="h6" for="premium_false">False</label>
             <input type="radio" value="0" name="premium" id="premium_false" class="radio" checked>
         </div>
+        <div id="recipe_types" class="form_row">
+            <h3>Recipe Types: </h3>
+            {% for type in recipe_types%}
+                <input type="checkbox" value="{{type.id}}" name="recipe_types" id="{{type.name}}{{type.id}}">
+                <label for="{{type.name}}{{type.id}}">{{type.name}}</label>
+            {% endfor %}
+        </div>
         <div class="form_row mb-2">
             <label class="h6" for="image">Recipe Image</label>
             <input type="file" id="image" name="image" multiple>
@@ -93,6 +100,7 @@
             {% endif %}
         {% endfor %}
         </div>
+        
         <div id='ingredient_list' class="hidden">
         </div>
         <div class="form_row mb-2"><button class="btn-success" type="submit" id="submit">Save Recipe!</button></div>

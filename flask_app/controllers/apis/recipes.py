@@ -66,7 +66,8 @@ def addRecipeToDB():
         'quantity_type' : request.form.getlist('quantity_type'),
         'spoonacular_id' : request.form.getlist('spoonacular_id'), 
         'images' : request.files.getlist('image'),
-        'source' : "What's For Dinner User Original"
+        'source' : "What's For Dinner User Original",
+        'recipe_types' : request.form.getlist('recipe_types')
     }
     for image in data['images']:
         print('one image')

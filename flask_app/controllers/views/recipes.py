@@ -30,7 +30,8 @@ def displayRecipe(id):
 def showAddRecipePage():
     user = User.getUserById(session['user_id'])
     cuisines = Cuisine.getAllCuisines()
-    return render_template('add_recipe.html', user = user, cuisines = cuisines)
+    recipe_types = Recipe.getAllRecipeTypes()
+    return render_template('add_recipe.html', user = user, cuisines = cuisines, recipe_types = recipe_types)
 
 @app.route('/browse_recipes')
 def showBrowse_Recipes():

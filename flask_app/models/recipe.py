@@ -62,6 +62,7 @@ class Recipe(ABC):
                 Ingredient.addIngredientToRecipe(details)
         
             cls.addImagesToRecipe(data['images'], data['user_id'], recipe_id)
+            cls.addRecipeTypesToRecipe(data['recipe_types'], recipe_id) #recipe_types is an array
 
         return recipe_id
 
