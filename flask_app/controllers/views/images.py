@@ -4,15 +4,6 @@ from flask_app import app
 from flask_app.models.image import ProfileImage, RecipeImage
 from flask_app.models.user import User
 
-@app.route('/delete_photo', methods=["POST"])
-def deletPhoto(): 
-    id = request.form['photo_id']
-
-    ProfileImage.deleteImage(id)
-    if 'url' in session: 
-        return redirect(session['url'])
-    return redirect('/dashboard')
-
 
 @app.route('/<int:user_id>/photos')
 def showAllPhotos(user_id):

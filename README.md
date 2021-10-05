@@ -18,7 +18,9 @@ Show Recipe Types and Cuisines on View Recipe View
 Add recipe from spoonacular API into database when favoriting a recipe
 Have the browse recipes favorite button save to the database if not already there. 
 Show 'unfavorite' button for recipes already in favorites
+*Split Controller files up into 'API' vs 'View' Controllers*
 -> 
+Add recipe_types to 'add_recipe'
 be able to unfavorite recipe from preferences
 Add Meals to Recipe Relationship
 Add mealtypes ['lunch', 'dinner', 'snack', etc.]
