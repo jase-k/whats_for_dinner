@@ -12,4 +12,4 @@ def newMeal():
         "recipes" : request.form.getlist('recipes')
     }
     meal_id = Meal.addMealToMenu(data)
-    return str(meal_id)
+    return redirect('/menu')

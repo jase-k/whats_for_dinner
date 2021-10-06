@@ -1,0 +1,25 @@
+{% block content %}
+<div class="meal_plan box">
+    <h2>Upcoming Meals for the Week!</h2>
+    <table>
+        <thead>
+            <th>Date</th>
+            <th>Meal Details</th> 
+            <th>Type of Meal</th>
+        </thead>
+        <tbody>
+            {% for meal in menu_meals %}
+            <tr>
+                <th>{{meal.date}}</th>
+                <td>
+                {% for recipe in meal.recipes %}
+                    <a href="/recipes/{{recipe.id}}">{{recipe.title}}</a><br>
+                {% endfor %}
+                </td>
+                <td>{{meal.meal_type}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>        
+</div>
+{% endblock %}

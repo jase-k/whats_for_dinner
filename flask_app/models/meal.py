@@ -68,7 +68,7 @@ class Meal:
         enddate = startdate + datetime.timedelta(daysDisplayed)
         print(enddate)
         print(calendar.day_name[0])
-        query = f"SELECT * FROM users_meals JOIN meals ON meal_id = meals.id WHERE meals.date > '{startdate}' AND user_id = {user_id}"
+        query = f"SELECT * FROM users_meals JOIN meals ON meal_id = meals.id WHERE meals.date >= '{startdate}' AND meals.date < '{enddate}' AND user_id = {user_id} ORDER BY meals.date"
         db_data = MySQLConnection().query_db(query)
         meals = []
         for row in db_data:
