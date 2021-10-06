@@ -60,13 +60,19 @@
         <button><a href="/{{user.id}}/photos">Edit Your Photos</a></button>
         <div>
             <h3>Favorite Recipes</h3>
-            {% for recipe in user.favorites %}
-                <p>{{recipe.title}}</p>
-            {% endfor %}
+            <table>
+                {% for recipe in user.favorites %}
+                <tr>
+                    <td><a href="/recipes/{{recipe.id}}">{{recipe.title}}</a></td>
+                    <td><button type="button" value="{{recipe.id}}" class="favorite_toggle">unfavorite</button></td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
     {% endwith %}
     
     <script src="{{url_for('static', filename='js/country_codes.js')}}"></script>
-    <script src="{{url_for('static', filename='js/registration.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='js/registration.js')}}"></script> Add when add Phone Number Validation -->
+    <script src="{{url_for('static', filename='js/preferences.js')}}"></script>
     {% endblock %}
