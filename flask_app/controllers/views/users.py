@@ -1,6 +1,7 @@
 import re
 from flask_app import app
 from flask import render_template, redirect, request, session
+from flask_app.models.meal import Meal
 from flask_app.models.user import User
 import os
 
@@ -10,10 +11,11 @@ def displayUserDashboard():
         return redirect('/')
     
     user = User.getUserById(session['user_id'])
+    meals = Meal.getUserFutureWeekMeals(session['user_id'])
 
     print("Current User:",user)
 
-    return render_template('dashboard.html', user = user)
+    return render_template('dashboard.html', user = user, menu_meals = meals)
 
 
 

@@ -1,15 +1,18 @@
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request
 from datetime import date
+import datetime
+import calendar
 from flask_app.models.recipe import Recipe
 
 
 class Meal:
     def __init__(self, data) -> None:
         self.id = data['id']
-        self.recipes = []
-        self.users = []
+        self.recipes = data['recipes']
+        self.users = data['users']
         self.date = data['date']
+        self.meal_type = Meal.getMealTypeNameById(data['meal_type_id'])
 
     @classmethod
     def addMealToMenu(cls, data):
@@ -41,6 +44,7 @@ class Meal:
             data = {
                 "id" : db_data[0]['id'],
                 "date" : db_data[0]['date'],
+                "meal_type_id" : db_data[0]['meal_type_id'],
                 "recipes" : [],
                 "users" : []
             }
@@ -53,12 +57,34 @@ class Meal:
                 if row["user_id"] not in user_ids:
                     data["users"].append(row["user_id"])
                     user_ids.append(row["user_id"])
-            print(data)
+            print("Meals Data: ", data)
             return cls(data)
         else:
             return False
 
     @classmethod
-    def getUserFutureMeals(cls, user_id, enddate, startdate= date.today()):
+    def getUserFutureWeekMeals(cls, user_id, daysDisplayed = 7, startdate= datetime.date.today()):
         print(startdate)
-        pass
+        enddate = startdate + datetime.timedelta(daysDisplayed)
+        print(enddate)
+        print(calendar.day_name[0])
+        query = f"SELECT * FROM users_meals JOIN meals ON meal_id = meals.id WHERE meals.date > '{startdate}' AND user_id = {user_id}"
+        db_data = MySQLConnection().query_db(query)
+        meals = []
+        for row in db_data:
+            meal = cls.getMealById(row['meal_id'])
+            weekday = datetime.date.weekday(meal.date)
+            meal.date = calendar.day_name[weekday]
+            meals.append(meal)
+
+        return meals
+    
+    @staticmethod
+    def getMealTypeNameById(meal_type_id):
+        query = f"SELECT * FROM meal_types WHERE id = {meal_type_id}"
+        db_data = MySQLConnection().query_db(query)
+
+        if db_data:
+            return db_data[0]['name']
+        else:
+            return False

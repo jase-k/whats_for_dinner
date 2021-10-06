@@ -23,8 +23,9 @@ Add recipe_types to 'add_recipe'
 be able to unfavorite recipe from preferences
 Add Meals to Recipe Relationship
 Add Meal API route created
--> 
 Add mealtypes ['lunch', 'dinner', 'snack', etc.]
+-> 
+Show Menu on Dashboard
 Add User Menu's Functionality (Ability to Swap out Meals or Randomize one)
 Add 'add to meal button' on browse Recipes'
 Be able to generate meal plan for specific dates
