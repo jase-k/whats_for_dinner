@@ -9,7 +9,8 @@ def showMenu():
     user = User.getUserById(session['user_id'])
     enddate = request.args.get('enddate')
     if enddate:
-        menu = Meal.getUserFutureMealsByDates(enddate)
+        #Needs to be added
+        menu = Meal.getUserFutureMealsByDates(session['user_id'], enddate)
     else:
         menu = Meal.getUserFutureWeekMeals(session['user_id'])
     

@@ -1,6 +1,12 @@
+{% extends 'dashboard.html' %}
 {% block content %}
 <div class="meal_plan box">
     <h2>Upcoming Meals for the Week!</h2>
+    <form action="/menu">
+        <label for="enddate">Get Your Menu up to: </label>
+        <input type="date" name="enddate" />
+        <input type="submit" value="See Menu" />
+    </form>
     <table>
         <thead>
             <th>Date</th>

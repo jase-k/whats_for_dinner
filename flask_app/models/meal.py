@@ -78,7 +78,22 @@ class Meal:
             meals.append(meal)
 
         return meals
-    
+    @classmethod
+    def getUserFutureMealsByDates(cls, user_id, enddate = datetime.date.today() + datetime.timedelta(7), startdate= datetime.date.today()):
+        
+        print(calendar.day_name[0])
+        query = f"SELECT * FROM users_meals JOIN meals ON meal_id = meals.id WHERE meals.date >= '{startdate}' AND meals.date < '{enddate}' AND user_id = {user_id} ORDER BY meals.date"
+        db_data = MySQLConnection().query_db(query)
+        meals = []
+        for row in db_data:
+            meal = cls.getMealById(row['meal_id'])
+            weekday = datetime.date.weekday(meal.date)
+            month = meal.date.month
+            day = meal.date.day
+            meal.date = f"{calendar.month_abbr[month]} {day} ({calendar.day_abbr[weekday]})"
+            meals.append(meal)
+
+        return meals
     @staticmethod
     def getMealTypeNameById(meal_type_id):
         query = f"SELECT * FROM meal_types WHERE id = {meal_type_id}"
