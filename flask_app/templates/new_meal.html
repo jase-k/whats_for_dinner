@@ -1,0 +1,43 @@
+{% extends 'dashboard.html' %}
+{% block header %}
+<title>New Meal</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<h2>Add Meal to Menu!</h2>
+<form action="/add_meal" method="POST" class="form-control">
+    <div class="mb-3">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date">
+    </div>
+    <div class="mb-3">
+        <label for="meal_type">Meal Type</label>
+        <select name="meal_type" id="meal_type">
+            <option value="1">Breakfast</option>
+            <option value="2">Lunch</option>
+            <option value="3">Dinner</option>
+            <option value="4">Snack</option>
+            <option value="5">Special Occasion</option>
+        </select>
+    </div>
+    <div>
+        <label for="recipes">Add your Saved Recipes</label>
+        <select type="list" list="recipe_list" name="recipes" id="recipes">
+            {% for recipe in user.favorites %}
+                <option value="{{recipe.id}}" class="recipe_option">{{recipe.title}}</option>
+            {% endfor %}
+        </select>
+        <select type="list" list="recipe_list" name="recipes" id="recipes">
+            {% for recipe in user.favorites %}
+                <option value="{{recipe.id}}" class="recipe_option">{{recipe.title}}</option>
+            {% endfor %}
+        </select>
+        <ul>
+            <!-- <li>Selected Recipes Added Here (Click to Delete) </li> -->
+        </ul>
+    </div>
+    <!-- Coming Soon. Add friends or Household to meal -->
+    <button type="submit" id="submit">Add to Menu</button>
+</form>
+<script src="{{url_for('static', filename='js/meals.js')}}"></script>
+{% endblock %}

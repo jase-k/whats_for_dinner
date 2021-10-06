@@ -33,6 +33,26 @@ class Recipe(ABC):
                 is_valid = True
         return is_valid
     
+    def to_json(self):
+        json_object = {
+            "id" : self.id,     
+            # "created_at" : self.created_at,     
+            # "updated_at" : self.updated_at,     
+            "creator_id" : self.creator_id,     
+            "title" : self.title,     
+            "instructions" : self.instructions,     
+            "description" : self.description,     
+            "premium" : self.premium,     
+            "source" : self.source,     
+            "spoonacular_id" : self.spoonacular_id 
+        }
+        return json_object
+        
+            # "cuisines" : self.cuisines     Cuisine.getRecipeCuisines(data['id']),
+            # "ingredients" : self.ingredients     Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables,
+            # "images" : self.images     RecipeImage.getRecipeImages(data['id']),
+            # "recipe_types" : self.recipe_types     Recipe.getRecipesTypes(data['id']),
+    
     def has_recipe_type(self, type):
         for recipe_type in self.recipe_types:
             if type['name'] == recipe_type['name']:
