@@ -7,9 +7,9 @@ def mainPage():
 
 @app.route('/register')
 def registrationPage():
-    return render_template('registration.html')
+    return render_template('main/registration.html')
 
 @app.route('/login')
 def loginPage():
-    return render_template('login.html')
+    return render_template('main/login.html')
 

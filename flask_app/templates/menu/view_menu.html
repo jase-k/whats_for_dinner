@@ -1,4 +1,4 @@
-{% extends 'dashboard.html' %}
+{% extends 'main/navbar.html' %}
 {% block content %}
 <div class="meal_plan box">
     <h2>Upcoming Meals for the Week!</h2>
@@ -12,6 +12,7 @@
             <th>Date</th>
             <th>Meal Details</th> 
             <th>Type of Meal</th>
+            <th>Actions</th>
         </thead>
         <tbody>
             {% for meal in menu_meals %}
@@ -23,6 +24,11 @@
                 {% endfor %}
                 </td>
                 <td>{{meal.meal_type}}</td>
+                <td>
+                    <a href="/meal/{recipe.id}/edit" class="btn btn-info">Edit</a>
+                    <a href="/meal/{recipe.id}" class="btn btn-secondary">View</a>
+                    <a href="/meal/{recipe.id}/delete" class="btn btn-danger">Delete</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

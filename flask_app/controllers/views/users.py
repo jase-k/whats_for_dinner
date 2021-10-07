@@ -15,7 +15,7 @@ def displayUserDashboard():
 
     print("Current User:",user)
 
-    return render_template('dashboard.html', user = user, menu_meals = meals)
+    return render_template('main/dashboard.html', user = user, menu_meals = meals)
 
 
 
@@ -25,7 +25,7 @@ def showPreferences():
         return redirect('/')
     user = User.getUserById(session['user_id'])
 
-    return render_template('preferences.html', user = user)
+    return render_template('main/preferences.html', user = user)
 
 
 

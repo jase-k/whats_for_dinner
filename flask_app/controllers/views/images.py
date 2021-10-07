@@ -12,4 +12,4 @@ def showAllPhotos(user_id):
     user = User.getUserById(user_id)
     session['url'] = request.url
     print(session)
-    return render_template('user_photos.html', profile_images = profile_images, recipe_images = recipe_images, user = user)
+    return render_template('user/user_photos.html', profile_images = profile_images, recipe_images = recipe_images, user = user)

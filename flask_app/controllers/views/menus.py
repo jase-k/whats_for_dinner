@@ -14,4 +14,4 @@ def showMenu():
     else:
         menu = Meal.getUserFutureWeekMeals(session['user_id'])
     
-    return render_template("view_menu.html", user = user, menu_meals = menu)
+    return render_template("menu/view_menu.html", user = user, menu_meals = menu)

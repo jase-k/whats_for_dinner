@@ -21,7 +21,7 @@ def displayRecipe(id):
     recipe_types = Recipe.getAllRecipeTypes()
     print("RECIPE ", recipe)
     if recipe: 
-        return render_template('view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types) 
+        return render_template('recipe/view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types) 
     else:
         return 'False'
 
@@ -31,14 +31,14 @@ def showAddRecipePage():
     user = User.getUserById(session['user_id'])
     cuisines = Cuisine.getAllCuisines()
     recipe_types = Recipe.getAllRecipeTypes()
-    return render_template('add_recipe.html', user = user, cuisines = cuisines, recipe_types = recipe_types)
+    return render_template('recipe/add_recipe.html', user = user, cuisines = cuisines, recipe_types = recipe_types)
 
 @app.route('/browse_recipes')
 def showBrowse_Recipes():
     user = User.getUserById(session['user_id'])
     cuisines = Cuisine.getAllCuisines()
 
-    return render_template('browse_recipes.html', user = user, cuisines = cuisines)
+    return render_template('recipe/browse_recipes.html', user = user, cuisines = cuisines)
 
 @app.route('/edit_recipe/<int:id>')
 def showEditRecipe(id):
@@ -49,4 +49,4 @@ def showEditRecipe(id):
 
     print(recipe)
 
-    return render_template('edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines, recipe_types = recipe_types)
+    return render_template('recipe/edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines, recipe_types = recipe_types)

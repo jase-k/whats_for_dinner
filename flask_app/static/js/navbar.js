@@ -15,5 +15,10 @@ function toggleDeleteForm(){
 }
 
 function toggleDropDown(){
-    dropdown_menu.classList.toggle("hidden")
+    if(dropdown_menu.hidden == true){
+        dropdown_menu.hidden = false;
+    }
+    else{
+        dropdown_menu.hidden = true
+    }
 }

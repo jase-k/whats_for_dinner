@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/general.css')}}">
+{% extends "main/navbar.html" %}
     {% block header %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
     {% endblock %}
@@ -13,27 +6,6 @@
     {% block title %}
     <title>Dashboard</title>
     {% endblock %}
-</head>
-<body>
-    <div class="navbar421">
-        <h2>What's For Dinner</h2>
-        <div class="right_nav">
-            <div id="profile_image_container">
-                <img src="{{url_for('static', filename=''+user.profile_image.file_path)}}" alt="{{user.first_name}} {{user.last_name}}'s Profile Picture" id='profile_image' class="profile_image">
-            </div>
-            <ul id='dropdown' class=" dropdown421 hidden">
-                <a href="/dashboard">Dashboard</a>
-                <a href="/shopping_list">Shopping List</a>
-                <a href="/add_recipe">Add Recipe</a>
-                <a href="/browse_recipes">Browse Recipes</a>
-                <a href="/new_meal">Add Meal to Menu</a>
-                <a href="/find_friends">Find Friends</a>
-                <a href="/preferences">Preferences</a>
-            </ul>
-            <img src="{{url_for('static', filename='imgs/ux/menu_bar.png')}}" alt="menu" id="menu_bar">
-        </div>
-    </div>
-    <div class="spacer"></div>
     {% block content %}
         <div class="feed_container box">
             <h2>Feed</h2>
@@ -181,6 +153,5 @@
 
 
     {% endblock %}
-    <script src="{{url_for('static', filename='js/dashboard.js')}}"></script>
 </body>
 </html>
