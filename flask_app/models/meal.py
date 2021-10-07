@@ -1,3 +1,4 @@
+from werkzeug.utils import redirect
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request
 from datetime import date
@@ -12,7 +13,7 @@ class Meal:
         self.recipes = data['recipes']
         self.users = data['users']
         self.date = data['date']
-        self.meal_type = Meal.getMealTypeNameById(data['meal_type_id'])
+        self.meal_type = MealType.getMealTypeById(data['meal_type_id'])
 
     @classmethod
     def addMealToMenu(cls, data):
@@ -57,17 +58,15 @@ class Meal:
                 if row["user_id"] not in user_ids:
                     data["users"].append(row["user_id"])
                     user_ids.append(row["user_id"])
-            print("Meals Data: ", data)
             return cls(data)
         else:
             return False
 
     @classmethod
     def getUserFutureWeekMeals(cls, user_id, daysDisplayed = 7, startdate= datetime.date.today()):
-        print(startdate)
+
         enddate = startdate + datetime.timedelta(daysDisplayed)
-        print(enddate)
-        print(calendar.day_name[0])
+
         query = f"SELECT * FROM users_meals JOIN meals ON meal_id = meals.id WHERE meals.date >= '{startdate}' AND meals.date < '{enddate}' AND user_id = {user_id} ORDER BY meals.date"
         db_data = MySQLConnection().query_db(query)
         meals = []
@@ -80,8 +79,6 @@ class Meal:
         return meals
     @classmethod
     def getUserFutureMealsByDates(cls, user_id, enddate = datetime.date.today() + datetime.timedelta(7), startdate= datetime.date.today()):
-        
-        print(calendar.day_name[0])
         query = f"SELECT * FROM users_meals JOIN meals ON meal_id = meals.id WHERE meals.date >= '{startdate}' AND meals.date < '{enddate}' AND user_id = {user_id} ORDER BY meals.date"
         db_data = MySQLConnection().query_db(query)
         meals = []
@@ -94,12 +91,53 @@ class Meal:
             meals.append(meal)
 
         return meals
-    @staticmethod
-    def getMealTypeNameById(meal_type_id):
-        query = f"SELECT * FROM meal_types WHERE id = {meal_type_id}"
-        db_data = MySQLConnection().query_db(query)
+    
+    @classmethod
+    def updateMeal(cls, meal):
+        query = "UPDATE meals SET date = %(date)s, meal_type_id = %(meal_type_id)s WHERE id = %(id)s"
+        MySQLConnection().query_db(query, meal)
 
+        cls.deleteRecipesFromMeal(meal["id"])
+
+        for recipe_id in meal['recipes']:
+            cls.connectRecipeToMeal(meal['id'], recipe_id)
+        
+        meal = cls.getMealById(meal['id'])
+        return meal
+
+    @staticmethod
+    def deleteRecipesFromMeal(meal_id)-> None:
+        query = f"DELETE FROM meals_recipes WHERE meal_id = {meal_id}"
+        MySQLConnection().query_db(query)
+        return None
+
+
+class MealType:
+    def __init__(self, data) -> None:
+        self.id = data['id']
+        self.name = data['name']
+        self.description = data['description']
+    
+    @classmethod
+    def getMealTypeById(cls, id):
+        query = f"SELECT * FROM meal_types WHERE id = {id}"
+        db_data = MySQLConnection().query_db(query)
         if db_data:
-            return db_data[0]['name']
+            mealType = cls(db_data[0])
+            return mealType
+        
         else:
-            return False
+            return None
+    
+    @classmethod
+    def getMealAllMealTYpes(cls):
+        query = f"SELECT * FROM meal_types"
+        db_data = MySQLConnection().query_db(query)
+        mealTypes = []
+        if db_data:
+            for row in db_data:
+                mealTypes.append(cls(row))
+            return mealTypes
+        
+        else:
+            return None

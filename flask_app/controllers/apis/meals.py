@@ -13,3 +13,20 @@ def newMeal():
     }
     meal_id = Meal.addMealToMenu(data)
     return redirect('/menu')
+
+
+
+@app.route('/meals/<int:id>/delete')
+def deleteMeal():
+    pass
+
+@app.route('/edit_meal', methods=["POST"])
+def updateMeal():
+    data = {
+        "id" : request.form['meal_id'],
+        "date" : request.form['date'],
+        "meal_type_id" : request.form['meal_type'],
+        "recipes" : request.form.getlist('recipes')
+    }
+    Meal.updateMeal(data)
+    return redirect("/menu")

@@ -34,7 +34,6 @@ class User():
             
     @classmethod
     def validateLogin(cls, data):
-        print("Data Recieved from Login: ", data)
 
         user = cls.getUserByEmail(data['email'])
 
@@ -68,7 +67,6 @@ class User():
             data['phone'] = f"{data['country_code']}{data['phone']}"
 
             id = MySQLConnection().query_db(query, data)
-            print("New user created with the id : ", id)
             session['user_id'] = id
             
             return id
@@ -86,23 +84,19 @@ class User():
 
         if user_fromDB:
             user = cls(user_fromDB[0])
-            print("RETRIEVING USER: ", user)
             return user
         else:
-            print("Could not find user from database!")
             return False
 
     @staticmethod
     def hashPW(password):
         hashed = bcrypt.hashpw(bytes(password, "utf8"), bcrypt.gensalt(14))
-        print(f'Password: {password}, hashed into: {hashed}')
         return hashed
 
     @staticmethod
     def checkMatchPW(password, hashed_pw):
 
         pw_check = bcrypt.checkpw(bytes(password, "utf8"), bytes(hashed_pw, 'utf8'))
-        print("hashed pw check: ", pw_check )
 
         if not pw_check:
             flash('Incorrect Password', 'login')

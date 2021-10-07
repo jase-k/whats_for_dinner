@@ -19,7 +19,6 @@ def displayRecipe(id):
     session['url'] = request.url
 
     recipe_types = Recipe.getAllRecipeTypes()
-    print("RECIPE ", recipe)
     if recipe: 
         return render_template('recipe/view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types) 
     else:
@@ -46,7 +45,5 @@ def showEditRecipe(id):
     recipe = Recipe.getRecipeById(id)
     cuisines = Cuisine.getAllCuisines()
     recipe_types = Recipe.getAllRecipeTypes()
-
-    print(recipe)
 
     return render_template('recipe/edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines, recipe_types = recipe_types)

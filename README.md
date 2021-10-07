@@ -25,8 +25,11 @@ Add Meals to Recipe Relationship
 Add Meal API route created
 Add mealtypes ['lunch', 'dinner', 'snack', etc.]
 Show Menu on Dashboard
--> 
 Render menu based on dates
+Edit, View, Menu Meals
+-> 
+Ability to add X number of recipes to meal
+Delete Menu Meals
 Add User Menu's Functionality (Ability to Swap out Meals or Randomize one)
 Add 'add to meal button' on browse Recipes'
 Be able to generate meal plan for specific dates

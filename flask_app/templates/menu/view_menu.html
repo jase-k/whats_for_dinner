@@ -1,7 +1,7 @@
 {% extends 'main/navbar.html' %}
 {% block content %}
 <div class="meal_plan box">
-    <h2>Upcoming Meals for the Week!</h2>
+    <h2>Upcoming Meals</h2>
     <form action="/menu">
         <label for="enddate">Get Your Menu up to: </label>
         <input type="date" name="enddate" />
@@ -23,11 +23,11 @@
                     <a href="/recipes/{{recipe.id}}">{{recipe.title}}</a><br>
                 {% endfor %}
                 </td>
-                <td>{{meal.meal_type}}</td>
+                <td>{{meal.meal_type.name}}</td>
                 <td>
-                    <a href="/meal/{recipe.id}/edit" class="btn btn-info">Edit</a>
-                    <a href="/meal/{recipe.id}" class="btn btn-secondary">View</a>
-                    <a href="/meal/{recipe.id}/delete" class="btn btn-danger">Delete</a>
+                    <a href="/meals/{{meal.id}}/edit" class="btn btn-info">Edit</a>
+                    <a href="/meals/{{meal.id}}" class="btn btn-secondary">View</a>
+                    <a href="/meals/{{meal.id}}/delete" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}

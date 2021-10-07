@@ -121,7 +121,6 @@ class Recipe(ABC):
         if raw_data: 
             recipe = cls(raw_data[0])
 
-            print("THIS IS A RECIPE", recipe)
             return recipe
         else:
             return False
@@ -277,7 +276,7 @@ class SpoonacularRecipe(Recipe):
         data['description'] = data['description'].replace("'", "`")
         
         query = f"INSERT INTO recipes (created_at, updated_at, creator_id, title, instructions, premium, description, source, spoonacular_id) VALUES(NOW(), NOW(), 1, '{data['title']}', '{data['instructions']}', '0', '{data['description']}', '{data['source']}', {data['spoonacular_id']})"
-        print("Running query: ", query)
+
         recipe_id = MySQLConnection().query_db(query)
 
         if recipe_id:

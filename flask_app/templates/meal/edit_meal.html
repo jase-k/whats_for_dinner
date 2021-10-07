@@ -4,17 +4,22 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 {% endblock %}
 {% block content %}
-<h2>Add Meal to Menu!</h2>
-<form action="/add_meal" method="POST" class="form-control">
+<h2>Edit Meal</h2>
+<form action="/edit_meal" method="POST" class="form-control">
+    <input type="number" name="meal_id" value="{{meal.id}}" hidden>
     <div class="mb-3">
         <label for="date">Date:</label>
-        <input type="date" name="date" id="date">
+        <input type="date" name="date" id="date" value="{{meal.date}}">
     </div>
     <div class="mb-3">
         <label for="meal_type">Meal Type</label>
         <select name="meal_type" id="meal_type">
             {% for type in meal_types %}
-                <option value="{{type.id}}">{{type.name}}</option>
+                <option value="{{type.id}}"
+                {% if meal.meal_type.id == type.id %}
+                    selected
+                {% endif %}
+                >{{type.name}}</option>
             {% endfor %}
         </select>
     </div>
@@ -35,7 +40,7 @@
         </ul>
     </div>
     <!-- Coming Soon. Add friends or Household to meal -->
-    <button type="submit" id="submit">Add to Menu</button>
+    <button type="submit" id="submit">Save</button>
 </form>
 <script src="{{url_for('static', filename='js/meals.js')}}"></script>
 {% endblock %}

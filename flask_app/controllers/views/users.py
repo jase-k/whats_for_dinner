@@ -13,7 +13,6 @@ def displayUserDashboard():
     user = User.getUserById(session['user_id'])
     meals = Meal.getUserFutureWeekMeals(session['user_id'])
 
-    print("Current User:",user)
 
     return render_template('main/dashboard.html', user = user, menu_meals = meals)
 
