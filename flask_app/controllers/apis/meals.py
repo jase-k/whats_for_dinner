@@ -31,8 +31,9 @@ def newMeal():
 
 
 @app.route('/meals/<int:id>/delete')
-def deleteMeal():
-    pass
+def deleteMeal(id):
+    Meal.deleteMealById(id)
+    return redirect(session["url"])
 
 @app.route('/edit_meal', methods=["POST"])
 def updateMeal():

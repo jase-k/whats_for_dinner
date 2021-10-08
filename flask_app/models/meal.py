@@ -121,6 +121,19 @@ class Meal:
         query = f"DELETE FROM meals_recipes WHERE meal_id = {meal_id}"
         MySQLConnection().query_db(query)
         return None
+    
+    @staticmethod
+    def deleteUsersFromMeal(meal_id)-> None:
+        query = f"DELETE FROM users_meals WHERE meal_id = {meal_id}"
+        MySQLConnection().query_db(query)
+        return None
+    
+    @classmethod
+    def deleteMealById(cls, meal_id) -> None:
+        cls.deleteRecipesFromMeal(meal_id)
+        cls.deleteUsersFromMeal(meal_id)
+        query = f"DELETE FROM meals WHERE id = {meal_id}"
+        MySQLConnection().query_db(query)
 
 
 class MealType:
