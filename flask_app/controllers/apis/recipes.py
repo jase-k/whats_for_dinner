@@ -49,6 +49,11 @@ def getFavorites():
         favorite_ids.append(recipe_ids)
     return json.dumps(favorite_ids)
 
+@app.route('/api/recipe/<int:id>')
+def recipeJSON(id):
+    recipe = Recipe.getRecipeById(id).to_json()
+    return json.dumps(recipe)
+
 @app.route('/recipes/all_favorites')
 def getAllFavorites():
     user = User.getUserById(session['user_id'])

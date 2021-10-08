@@ -44,14 +44,15 @@ class Recipe(ABC):
             "description" : self.description,     
             "premium" : self.premium,     
             "source" : self.source,     
-            "spoonacular_id" : self.spoonacular_id 
+            "spoonacular_id" : self.spoonacular_id,
+            "recipe_types" : Recipe.getRecipesTypes(self.id)
         }
+            
         return json_object
         
             # "cuisines" : self.cuisines     Cuisine.getRecipeCuisines(data['id']),
             # "ingredients" : self.ingredients     Ingredient.getAllRecipeIngredients(data['id']) #Returns an array of ingredient instance with the quantity and unit variables,
             # "images" : self.images     RecipeImage.getRecipeImages(data['id']),
-            # "recipe_types" : self.recipe_types     Recipe.getRecipesTypes(data['id']),
     
     def has_recipe_type(self, type):
         for recipe_type in self.recipe_types:
@@ -233,8 +234,9 @@ class Recipe(ABC):
 
         for row in db_data:
             recipe_type = {
-                'name' : row['name'],
-                'description' : row['description']
+                "id" : row['id'],
+                "name" : row['name'],
+                "description" : row['description']
             }
             recipe_types.append(recipe_type)
 
@@ -257,7 +259,6 @@ class Recipe(ABC):
 class UserRecipe(Recipe):
     def __init__(self, data):
         super().__init__(data)
-    
 
 
 class SpoonacularRecipe(Recipe):

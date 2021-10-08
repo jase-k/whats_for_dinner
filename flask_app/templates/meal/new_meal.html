@@ -20,22 +20,20 @@
     </div>
     <div>
         <label for="recipes">Add your Saved Recipes</label>
-        <select type="list" list="recipe_list" name="recipes" id="recipes">
+        <select type="list" list="recipe_list" name="recipes" id="recipe_list">
             {% for recipe in user.favorites %}
                 <option value="{{recipe.id}}" class="recipe_option">{{recipe.title}}</option>
             {% endfor %}
         </select>
-        <select type="list" list="recipe_list" name="recipes" id="recipes">
-            {% for recipe in user.favorites %}
-                <option value="{{recipe.id}}" class="recipe_option">{{recipe.title}}</option>
-            {% endfor %}
-        </select>
-        <ul>
-            <!-- <li>Selected Recipes Added Here (Click to Delete) </li> -->
-        </ul>
+        <button type="button" id="add_button">Add Another</button>
     </div>
+    <ul id="recipe_ul">
+
+    </ul>
     <!-- Coming Soon. Add friends or Household to meal -->
-    <button type="submit" id="submit">Add to Menu</button>
+    <button type="button" id="submit">Add to Menu</button>
 </form>
+
+
 <script src="{{url_for('static', filename='js/meals.js')}}"></script>
 {% endblock %}

@@ -44,6 +44,9 @@ Food Groups ['vegetables', 'fruits', 'meat', 'grains', 'oils', 'sweets']
 # Tag list 
 ['high protein', 'gluten-free', 'low-calorie', 'on-the-go']
 
+# Images
+Be Able to display user images or source images. May have to change the way you store images. Look into flask folder creation and using url_for
+
 # Recipe Sorting / Filing / Searching
 Add diet types as a function of recipes
 Add Weight Watchers Score

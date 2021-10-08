@@ -14,14 +14,25 @@ class Meal:
         self.users = data['users']
         self.date = data['date']
         self.meal_type = MealType.getMealTypeById(data['meal_type_id'])
+    
+    def to_json(self):
+        data = {
+            "id" : self.id,
+            "recipes" : self.recipes,
+            "users" : self.users,
+            "date" : self.date,
+            "meal_type" : self.meal_type.to_json()
+        }
+
+        return data
 
     @classmethod
     def addMealToMenu(cls, data):
-        query = "INSERT INTO meals (created_at, updated_at, meal_type_id, date) VALUES (NOW(), NOW(), %(meal_type_id)s, %(date)s)"
-        meal_id = MySQLConnection().query_db(query, data)
+        query = f"INSERT INTO meals (created_at, updated_at, meal_type_id, date) VALUES (NOW(), NOW(), {data['meal_type_id']}, '{data['date']}')"
+        meal_id = MySQLConnection().query_db(query)
         cls.connectMealToUser(meal_id, data['user_id'])
-        for recipe_id in data['recipes']:
-            cls.connectRecipeToMeal(meal_id, recipe_id)
+        for recipe in data['recipes']:
+            cls.connectRecipeToMeal(meal_id, recipe['id'])
         return cls.getMealById(meal_id)
     
     @staticmethod
@@ -117,6 +128,14 @@ class MealType:
         self.id = data['id']
         self.name = data['name']
         self.description = data['description']
+    
+    def to_json(self):
+        data = {
+            "id" : self.id,
+            "name" : self.name,
+            "description" : self.description
+        }
+        return data
     
     @classmethod
     def getMealTypeById(cls, id):
