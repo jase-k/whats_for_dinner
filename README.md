@@ -27,9 +27,10 @@ Add mealtypes ['lunch', 'dinner', 'snack', etc.]
 Show Menu on Dashboard
 Render menu based on dates
 Edit, View, Menu Meals
--> 
 Ability to add X number of recipes to meal
 Delete Menu Meals
+Fix edit.html to update menu Need a new route
+-> 
 Add User Menu's Functionality (Ability to Swap out Meals or Randomize one)
 Add 'add to meal button' on browse Recipes'
 Be able to generate meal plan for specific dates
@@ -41,8 +42,11 @@ Add Optional Ingredients
 # Ingredient/Recipe Details
 Food Groups ['vegetables', 'fruits', 'meat', 'grains', 'oils', 'sweets']
 
+
 # Tag list 
 ['high protein', 'gluten-free', 'low-calorie', 'on-the-go']
+Incorporate Cost Tags for ingredients: ["low-cost", "medium-cost", "high-cost" ]
+Let Users generate their own tags and organize them. 
 
 # Images
 Be Able to display user images or source images. May have to change the way you store images. Look into flask folder creation and using url_for
@@ -56,3 +60,4 @@ Give notification a day prior if meal requires prep work
 
 # Other Features
 Be able to plan for company coming over
+Premium chef selected meals

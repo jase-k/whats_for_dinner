@@ -35,13 +35,27 @@ def deleteMeal(id):
     Meal.deleteMealById(id)
     return redirect(session["url"])
 
-@app.route('/edit_meal', methods=["POST"])
+@app.route('/update_meal', methods=["POST"])
 def updateMeal():
     data = {
-        "id" : request.form['meal_id'],
-        "date" : request.form['date'],
-        "meal_type_id" : request.form['meal_type'],
-        "recipes" : request.form.getlist('recipes')
+        "user_id" : session['user_id'],
+        "meal_id" : request.get_json()['id'],
+        "date" : request.get_json()['date'],
+        "meal_type_id": request.get_json()['meal_type_id'],
+        "recipes" : request.get_json()['recipes']
     }
-    Meal.updateMeal(data)
-    return redirect("/menu")
+
+    meal = Meal.updateMeal(data)
+    
+    if meal:
+        response = {
+            "status" : "success",
+            "meal_id" : meal.id
+        }
+        return json.dumps(response)
+    else:
+        response = {
+            "status" : "failed",
+            "meal_id" : False
+        }
+        return json.dumps(response)

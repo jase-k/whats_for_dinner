@@ -105,15 +105,15 @@ class Meal:
     
     @classmethod
     def updateMeal(cls, meal):
-        query = "UPDATE meals SET date = %(date)s, meal_type_id = %(meal_type_id)s WHERE id = %(id)s"
-        MySQLConnection().query_db(query, meal)
+        query = f"UPDATE meals SET date = '{meal['date']}', meal_type_id = {meal['meal_type_id']} WHERE id = {meal['meal_id']}"
+        MySQLConnection().query_db(query)
 
-        cls.deleteRecipesFromMeal(meal["id"])
+        cls.deleteRecipesFromMeal(meal["meal_id"])
 
-        for recipe_id in meal['recipes']:
-            cls.connectRecipeToMeal(meal['id'], recipe_id)
+        for recipe in meal['recipes']:
+            cls.connectRecipeToMeal(meal['meal_id'], recipe['id'])
         
-        meal = cls.getMealById(meal['id'])
+        meal = cls.getMealById(meal['meal_id'])
         return meal
 
     @staticmethod
