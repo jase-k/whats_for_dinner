@@ -30,17 +30,27 @@ Edit, View, Menu Meals
 Ability to add X number of recipes to meal
 Delete Menu Meals
 Fix edit.html to update menu Need a new route
--> 
-Add User Menu's Functionality (Ability to Swap out Meals or Randomize one)
-Add 'add to meal button' on browse Recipes'
-Be able to generate meal plan for specific dates
 
+-> 
 # Generate Shopping List
+*Generate a new Shopping List if currently not in DB*
+*Keep Track of what you've gotten and what you need*
+*Add Your Own items to Shopping List*
 Populate a Shopping List based on Meal plan for the week. 
 Add Optional Ingredients
+If get a substitute of an ingredient, mark that on the recipe that was substituted (This will need to be a new table)
+Show (For Dinner on Sat, Oct 14, Recipe: *Recipe.Title*)
+Clear List prior to generating a new one
+
+# Auto-Generate a Meal Plan
+Add Menu Options to Preferences
+Add 'add to meal button' on browse Recipes'
+Add User Menu's Functionality (Ability to Swap out Meals or Randomize one)
+Be able to generate meal plan for specific dates
 
 # Ingredient/Recipe Details
 Food Groups ['vegetables', 'fruits', 'meat', 'grains', 'oils', 'sweets']
+Good to Have on Hand: 
 
 
 # Tag list 

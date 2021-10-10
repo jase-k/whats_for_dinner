@@ -1,5 +1,25 @@
-{% extends 'dashboard.html' %}
+{% extends 'main/dashboard.html' %}
 {% block content %}
 <h2>Here is your Shopping List!</h2>
 <p>This list is for you to take to the store so you don't forget anything! Remember to check to see what you have in your kitchen first! </p>
+<label for="startdate">Start Date: </label>
+<input type="date" name="startdate" id="startdate">
+<label for="enddate">End Date: </label>
+<input type="date" name="enddate" id="enddate">
+<button type="button" id="generate_list">Generate Shopping List</button>
+<table>
+    <thead>
+        <tr>
+            <th>Check</th>
+            <th>Amount</th>
+            <th>Ingredient</th>
+            <th>Substitutions</th>
+            <th>In Recipe: </th>
+        </tr>
+    </thead>
+    <tbody id="shopping_list_table">
+
+    </tbody>
+</table>
+<script src="{{url_for('static', filename='js/shopping_list.js')}}"></script>
 {% endblock %}
