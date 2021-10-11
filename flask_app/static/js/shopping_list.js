@@ -25,16 +25,31 @@ async function showList(){
     
     console.log(ing_list)
     var table = document.getElementById('shopping_list_table')
+    var ing_list = ing_list.results
     
-    for(var i = 0; i < ing_list.results.length; i++){
+    for(var i = 0; i < ing_list.length; i++){
+        var recipeHtmlString = "" //Resets the recipe html string
+        //Loops through the meals the ingredient is apart of
+        for(var j = 0; j < ing_list[i].meals.length; j++){
+            var meal = ing_list[i].meals
+            console.log(meal)
+            //loops through the recipes in the meal
+            for(var k = 0; k < meal[j].recipes.length; k++){
+                var recipe = meal[j].recipes[k]
+                var recipeHtmlString = `${recipeHtmlString} <a href="/recipes/${recipe.id}">${recipe.title}</a> on ${meal[j].date} <br>`
+            }
+            
+        }
+
         table.innerHTML += `
         <tr>
-            <td><input type="checkbox" name="ingredients" id="${ing_list.results[i].name}_${ing_list.results[i].quantity_type}"></td>
-            <td>${ing_list.results[i].total} ${ing_list.results[i].quantity_type}</td>
-            <td><label for="${ing_list.results[i].name}_${ing_list.results[i].quantity_type}" >${ing_list.results[i].name}</label></td>
+            <td><input type="checkbox" name="ingredients" id="${ing_list[i].name}_${ing_list[i].quantity_type}"></td>
+            <td>${ing_list[i].total} ${ing_list[i].quantity_type}</td>
+            <td><label for="${ing_list[i].name}_${ing_list[i].quantity_type}" >${ing_list[i].name}</label></td>
             <td class="subs">Substitutions</td>
-            <td>For Recipe: {{recipe.title}}</td>
+            <td class="for_recipe">For Recipe: <br> ${recipeHtmlString} </td>
         </tr>
         `
+        
     }
 }

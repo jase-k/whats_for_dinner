@@ -7,5 +7,5 @@ from flask_app.models.meal import Meal
 def showShopping_List():
     user = User.getUserById(session['user_id'])
     meals = Meal.getUserFutureMealsByDates(user.id)
-    return render_template('shopping_list.html', user = user, meals = meals)
+    return render_template('shopping_list/shopping_list.html', user = user, meals = meals)
 

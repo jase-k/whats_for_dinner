@@ -31,12 +31,13 @@ Ability to add X number of recipes to meal
 Delete Menu Meals
 Fix edit.html to update menu Need a new route
 
--> 
 # Generate Shopping List
 *Generate a new Shopping List if currently not in DB*
+Populate a Shopping List based on Meal plan for the week. 
+*Show what recipes the ingredient is for
+-> 
 *Keep Track of what you've gotten and what you need*
 *Add Your Own items to Shopping List*
-Populate a Shopping List based on Meal plan for the week. 
 Add Optional Ingredients
 If get a substitute of an ingredient, mark that on the recipe that was substituted (This will need to be a new table)
 Show (For Dinner on Sat, Oct 14, Recipe: *Recipe.Title*)
@@ -71,3 +72,4 @@ Give notification a day prior if meal requires prep work
 # Other Features
 Be able to plan for company coming over
 Premium chef selected meals
+sort shopping list by recipe or by grocery aisle

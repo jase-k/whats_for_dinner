@@ -2,6 +2,9 @@ from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request
 from flask_app.models.meal import Meal, MealType
 from flask_app.models.user import User
+from datetime import date
+import datetime
+import calendar
 
 class ShoppingList: 
     def __init__(self, data) -> None:
@@ -68,6 +71,11 @@ class ShoppingList:
         db_data = MySQLConnection().query_db(query)
         print(db_data)
         for row in db_data:
+            weekday = datetime.date.weekday(row['date'])
+            month = row['date'].month
+            day = row['date'].day
+            row['date']= f"{calendar.month_abbr[month]} {day} ({calendar.day_abbr[weekday]})"
+
             ingredient = {
                 "id" : row["id"],
                 "name" : row["name"],
