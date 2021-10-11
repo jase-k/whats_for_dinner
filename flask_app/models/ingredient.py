@@ -1,3 +1,5 @@
+import json
+import types
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request
 
@@ -14,16 +16,16 @@ class Ingredient:
         self.spoonacular_id = data['spoonacular_id']
         if 'quantity' in data:
             self.quantity = data['quantity']
-        if 'quantity_type' in data:
-            self.quantity_type = data['quantity_type']
+        if 'quantity_type_id' in data:
+            self.quantity_type_id = data['quantity_type_id']
 
     def __str__(self) -> str:
         str = f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, name: {self.name}, allergy_id: {self.allergy_id}, spoonacular_id: {self.spoonacular_id}"
 
         if 'quantity' in self:
             str += f", quantity: {self.quantity}"
-        if 'quantity_type' in self:
-            str += f", quantity_type: {self.quantity_type}"
+        if 'quantity_type_id' in self:
+            str += f", quantity_type_id: {self.quantity_type_id}"
         
         return str
 
@@ -62,7 +64,7 @@ class Ingredient:
 
     @classmethod
     def addIngredientToRecipe(cls, data):
-        query = 'INSERT INTO recipes_ingredients (created_at, updated_at, recipe_id, ingredient_id, quantity, quantity_type) VALUES(NOW(), NOW(), %(recipe_id)s, %(ingredient_id)s,  %(quantity)s, %(quantity_type)s)'
+        query = 'INSERT INTO recipes_ingredients (created_at, updated_at, recipe_id, ingredient_id, quantity, quantity_type_id) VALUES(NOW(), NOW(), %(recipe_id)s, %(ingredient_id)s,  %(quantity)s, %(quantity_type_id)s)'
 
         id = MySQLConnection().query_db(query, data)
 
@@ -93,7 +95,7 @@ class Ingredient:
                 "recipe_id" : data['recipe_id'],
                 "ingredient_id" : ingredient_id,
                 'quantity' : data['quantity'][x],
-                'quantity_type' : data['quantity_type'][x]
+                'quantity_type_id' : data['quantity_type_id'][x]
             }
 
             cls.addIngredientToRecipe(ing_data)
@@ -107,3 +109,42 @@ class Ingredient:
         MySQLConnection().query_db(query)
 
         return 0
+
+class QuantityType:
+    def __init__(self, data) -> None:
+        self.id = data['id']
+        self.name = data['name']
+        self.description = data['description']
+        self.dry = data['dry']
+
+    def to_json(self):
+        q_type = {
+            "id" : self.id,
+            "name" : self.name,
+            "description" : self.description,
+            "dry" : self.dry
+        }
+        return q_type
+
+    @classmethod
+    def getQuantityTypes(cls) -> json:
+        query = "SELECT * FROM quantity_types"
+
+        db_data = MySQLConnection().query_db(query)
+
+        q_types = []
+        for row in db_data:
+            q_types.append(cls(row).to_json())
+        
+        return q_types
+    
+    @classmethod
+    def getQuantityTypeById(cls, id) -> json:
+        query = f"SELECT * FROM quantity_types WHERE id = {id}"
+
+        db_data = MySQLConnection().query_db(query)
+        
+        if db_data:
+            return cls(db_data[0]).to_json()
+        else:
+            return None

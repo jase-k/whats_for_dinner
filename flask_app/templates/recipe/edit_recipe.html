@@ -127,17 +127,14 @@
                     <tr>
                         <td><input name = 'quantity' class = 'quantity' type='float'value='{{ingredient.quantity}}'></td>
                         <td>
-                            <select name = 'quantity_type'>
-                                <option value="{{ingredient.quantity_type}}">{{ingredient.quantity_type}}</option>
-                                <option value = 'tbsp'>tbsp</option>
-                                <option value = 'tsp'>tsp</option>
-                                <option value = 'c'>c</option>
-                                <option value = 'ml'>ml</option>
-                                <option value = 'l'>l</option>
-                                <option value = 'oz'>oz</option>
-                                <option value = 'g'>g</option>
-                                <option value = 'whole'>whole</option>
-                                <option value = 'whole'>slice</option>
+                            <select name = 'quantity_type_id'>
+                                {% for type in quantity_types %}
+                                <option value = '{{type.id}} {{ingredient.quantity_type_id}}' 
+                                {% if ingredient.quantity_type_id == type.id %}
+                                selected
+                                {% endif %}
+                                >{{type.name}}</option>
+                                {% endfor %}
                             </select>
                         </td>
                         <td><input type="text" value="{{ingredient.name}}" class='readonly' name='ingredient_list' readonly></td>

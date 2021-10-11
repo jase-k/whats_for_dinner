@@ -1,0 +1,13 @@
+use meal_prep;
+-- CREATE TABLE quantity_types (id int not null, created_at datetime, updated_at datetime, name varchar(45), description varchar(255));
+SELECT * FROM quantity_types;
+-- INSERT INTO quantity_types (name, description) VALUES("tbls", "tablespoon");
+-- INSERT INTO quantity_types (name, description) VALUES("tsp", "teaspoon");
+-- INSERT INTO quantity_types (name, description) VALUES("c", "cup");
+-- INSERT INTO quantity_types (name, description) VALUES("ml", "milliliter");
+-- INSERT INTO quantity_types (name, description) VALUES("l", "liter");
+-- INSERT INTO quantity_types (name, description, dry) VALUES("oz", "ounce", True);
+-- INSERT INTO quantity_types (name, description, dry) VALUES("lb", "pound", True);
+-- INSERT INTO quantity_types (name, description, dry) VALUES("g", "gram", True);
+-- INSERT INTO quantity_types (name, description, dry) VALUES("whole", "whole unit of food", True);
+-- INSERT INTO quantity_types (name, description, dry) VALUES("slice", "slice of the whole unit", True);

@@ -14,18 +14,3 @@ INSERT INTO recipe_types (name, description) VALUES("beverage", "Anything you dr
 INSERT INTO recipe_types (name, description) VALUES("sauce", "Made for dipping or pour over");
 INSERT INTO recipe_types (name, description) VALUES("marinade", "A sauce, typically made of oil, vinegar, spices, and herbs, in which meat, fish, or other food is soaked before cooking in order to flavor or soften it.");
 INSERT INTO recipe_types (name, description) VALUES("fingerfood", "Recipes that don't require silverware to eat!");
--- main course
--- side dish
--- dessert
--- breakfast
--- snack
-
--- appetizer
--- salad
--- bread
--- soup
--- beverage
--- sauce
--- marinade
--- fingerfood
--- drink

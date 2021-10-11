@@ -75,7 +75,7 @@ def addRecipeToDB():
         'ingredients' : request.form.getlist('ingredient_list'),
         'quantity' : request.form.getlist('quantity'),
         'premium' : request.form['premium'],
-        'quantity_type' : request.form.getlist('quantity_type'),
+        'quantity_type_ids' : request.form.getlist('quantity_type_ids'),
         'spoonacular_id' : request.form.getlist('spoonacular_id'), 
         'images' : request.files.getlist('image'),
         'source' : "What's For Dinner User Original",
@@ -118,7 +118,7 @@ def updateRecipe():
         'ingredients' : request.form.getlist('ingredient_list'),
         'quantity' : request.form.getlist('quantity'),
         'premium' : request.form['premium'],
-        'quantity_type' : request.form.getlist('quantity_type'),
+        'quantity_type_id' : request.form.getlist('quantity_type_id'),
         'spoonacular_id' : request.form.getlist('spoonacular_id'),
         'images' : request.files.getlist('image'),
         'recipe_types' : request.form.getlist('recipe_types')

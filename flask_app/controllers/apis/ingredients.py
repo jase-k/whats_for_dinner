@@ -1,7 +1,10 @@
+import json
 from flask import redirect, request, session, render_template
 from flask_app import app
 import os
 import urllib.request
+
+from flask_app.models.ingredient import Ingredient, QuantityType
 
 
 @app.route('/search_ingredients')
@@ -20,3 +23,10 @@ def searchSpoonacularDatabase():
         'html' : html
     }
     return result
+
+@app.route('/ingredients/quantity_types')
+def getQuantityTypes() -> json:
+    types = QuantityType.getQuantityTypes()
+    return json.dumps(types)
+
+

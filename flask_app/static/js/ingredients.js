@@ -4,6 +4,8 @@ var search_button = document.getElementById('search_ingredients')
 var search_input = document.getElementById('ingredients')
 search_button.addEventListener('click', searchIngredientList)
 
+
+
 var spoonacular_access_key = '8ed850e1602d441a8215de623bacac90'
 var search_results_container = document.getElementById('ingredient_search_results')
 
@@ -29,9 +31,18 @@ async function displayResults(results){
 
 }
 
-var search_results = document.getElementsByClassName('search_result')
-
 var table_body = document.getElementById('table_body')
+
+//Adds quantity_types to global variable from database
+var quantity_types_html = ""
+async function getQuantityTypes(){
+    var types = await fetch("/ingredients/quantity_types")
+    var response = await types.json()
+    for(var i = 0; i < response.length; i++){
+        quantity_types_html += `<option value = '${response[i].id}'>${response[i].name}</option>`
+    }
+}
+getQuantityTypes()
 
 function addToList(){
     console.log(this)
@@ -39,28 +50,24 @@ function addToList(){
     row.innerHTML = `
     <td><input name = 'quantity' class = 'quantity' type='float'></td>
     <td>
-        <select name = 'quantity_type'>
-            <option value = 'tbsp'>tbsp</option>
-            <option value = 'tsp'>tsp</option>
-            <option value = 'c'>c</option>
-            <option value = 'ml'>ml</option>
-            <option value = 'l'>l</option>
-            <option value = 'oz'>oz</option>
-            <option value = 'g'>g</option>
-            <option value = 'whole'>whole</option>
-            <option value = 'slice'>slice</option>
+        <select name = 'quantity_type_ids' id='quantity_select'>
+            ${quantity_types_html}
         </select>
     </td>
     <td><input type="text" value="${this.innerHTML}" class='readonly' name='ingredient_list' readonly></td>
     <td><button class='remove_ingredient' type='button'>remove</button></td>
     <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value=${this.value} ></td>
     `
+    
+    
     console.log(row)
     table_body.appendChild(row)
+
     hidelist()
     createRemoveButtons()
     search_input.value = ''
 }
+
 
 var ingredient_list_form = document.getElementById('ingredient_list')
 

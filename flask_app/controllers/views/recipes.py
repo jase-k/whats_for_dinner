@@ -5,7 +5,7 @@ from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.recipe import Recipe
 from flask_app.models.cuisine import Cuisine
-from flask_app.models.image import RecipeImage
+from flask_app.models.ingredient import QuantityType
 import json
 
 
@@ -19,8 +19,10 @@ def displayRecipe(id):
     session['url'] = request.url
 
     recipe_types = Recipe.getAllRecipeTypes()
+    quantity_types = QuantityType.getQuantityTypes()
+
     if recipe: 
-        return render_template('recipe/view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types) 
+        return render_template('recipe/view_recipe.html', recipe = recipe, user = user, creator = creator, recipe_types = recipe_types, quantity_types = quantity_types) 
     else:
         return 'False'
 
@@ -45,5 +47,7 @@ def showEditRecipe(id):
     recipe = Recipe.getRecipeById(id)
     cuisines = Cuisine.getAllCuisines()
     recipe_types = Recipe.getAllRecipeTypes()
+    quantity_types = QuantityType.getQuantityTypes()
 
-    return render_template('recipe/edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines, recipe_types = recipe_types)
+
+    return render_template('recipe/edit_recipe.html', user = user, recipe = recipe, cuisines = cuisines, recipe_types = recipe_types, quantity_types = quantity_types)
