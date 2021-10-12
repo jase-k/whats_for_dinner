@@ -10,11 +10,10 @@ def newMeal():
         "user_id" : session['user_id'],
         "date" : request.get_json()['date'],
         "meal_type_id": request.get_json()['meal_type_id'],
+        "menu_id" : request.get_json()['menu_id'],
         "recipes" : request.get_json()['recipes']
     }
-    print("Sending Data", data)
     meal = Meal.addMealToMenu(data).to_json()
-    print("Meal Added with Id: ", meal["id"])
     if meal:
         response = {
             "status" : "success",

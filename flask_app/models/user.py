@@ -3,6 +3,7 @@ from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, session, jsonify, request
 from flask_app.models.image import ProfileImage
 from flask_app.models.recipe import Recipe
+from flask_app.models.menu import Menu
 from abc import ABC, abstractclassmethod, abstractmethod
 import os
 import bcrypt
@@ -19,8 +20,7 @@ class User(ABC):
         self.password = data['password'] #will come from the database hashed
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.menu_id = data['menu_id']
-        self.shopping_list_id = data['shopping_list_id']
+        self.menu = Menu.getMenuById(data['menu_id'])
         self.profile_image_id = data['profile_image_id']
         self.profile_image = ProfileImage.getImageById(data['profile_image_id'])
         if(withFavorites):
@@ -28,7 +28,7 @@ class User(ABC):
         
 
     def __str__(self):
-        return f" id: {self.id}, \n first_name: '{self.first_name}', \n last_name: '{self.last_name}', \n email: '{self.email}', \n phone: '{self.phone}', \n password: '{self.password}', \n created_at: {self.created_at}, \n upated_at: {self.updated_at}, \n menu_id: {self.menu_id}, \n shopping_list_id: {self.shopping_list_id}, \n profile_image_id: {self.profile_image_id}, \n  profile_image: {self.profile_image} favorites: {self.favorites}"
+        return f" id: {self.id}, \n first_name: '{self.first_name}', \n last_name: '{self.last_name}', \n email: '{self.email}', \n phone: '{self.phone}', \n password: '{self.password}', \n created_at: {self.created_at}, \n upated_at: {self.updated_at}, \n menu_id: {self.menu_id},  \n profile_image_id: {self.profile_image_id}, \n  profile_image: {self.profile_image} favorites: {self.favorites}"
 
             
     @classmethod
@@ -216,10 +216,15 @@ class User(ABC):
 
     @classmethod
     def updateUser(cls, data):
-        query = "UPDATE users SET first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s, updated_at = NOW(), profile_image_id = %(profile_image_id)s WHERE id = %(id)s"
+        query = "UPDATE users SET first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s, updated_at = NOW(), profile_image_id = %(profile_image_id)s, menu_id = %(menu_id)s WHERE id = %(id)s"
 
         #checks for validation
         is_valid = cls.validateUser(data)
+
+        if data["menu_id"] == '':
+            data["menu_id"] = Menu.createNew(data['menu_name'])
+        else: 
+            Menu.updateMenu(data['menu_id'], data['menu_name'])
 
         data['profile_image_id'] = ProfileImage.insertImageToDB(data['id'], data['profile_picture'])
 

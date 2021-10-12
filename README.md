@@ -35,8 +35,10 @@ Fix edit.html to update menu Need a new route
 *Generate a new Shopping List if currently not in DB*
 Populate a Shopping List based on Meal plan for the week. 
 *Show what recipes the ingredient is for
--> 
 Change quantity_type to a seperate table so it can be referred by id
+Change View_recipe.html to generate the name of the quantity instead of id
+->
+Change users_meals to menus_meals to support more than one user having the same meals
 *Keep Track of what you've gotten and what you need*
 *Add Your Own items to Shopping List*
 Add Optional Ingredients

@@ -74,7 +74,8 @@ async function submitMeal(){
     data = {
         "date" : date,
         "meal_type_id": document.getElementById('meal_type').value,
-        "recipes" : recipe_list
+        "recipes" : recipe_list,
+        "menu_id" : document.getElementById("menu_id").value
     }
     
     var response =  await addMealToDB(data)

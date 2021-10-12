@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import MySQLConnection
 from flask import flash, request
+from flask_app.models.ingredient import QuantityType
 from flask_app.models.meal import Meal, MealType
 from flask_app.models.user import User
 from datetime import date
@@ -11,7 +12,7 @@ class ShoppingList:
         self.id = data['id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.items = []
+        self.items = [] #List of items
         # {
         #     "quantity" : ______,
         #     "quantity_type" : ______,
@@ -30,6 +31,10 @@ class ShoppingList:
         user = User.getUserById(user_id, False)
         if not user.shopping_list_id:
             user.shopping_list_id = cls.addNewShoppingToDB()
+            #####SHOULD UPDATE TO MENU -> MENU AUTO IS CONNECTED TO THE SHOPPING LIST
+
+
+
         ingredientList = cls.getIngredientList(user_id, startdate, enddate)
         ingredientList = cls.consolodateIngredientList(ingredientList)
         #consolodate ingredients
@@ -113,3 +118,14 @@ class ShoppingList:
     def addUserToShoppingList(user_id, list_id) -> None:
         query = f"UPDATE users SET shopping_list_id = {list_id} WHERE id = {user_id}"
         MySQLConnection().query_db(query)
+
+
+class ShoppingListItems:
+    def __init__(self, data) -> None:
+        self.id = data["id"]
+        self.quantity = data["quantity"]
+        self.quantity_type = QuantityType.getQuantityTypeById(data['quantity_type_id'])
+        self.name = data['name']
+        self.boughten = data['boughten'] #Boolean
+        self.meal_id = data["meal_id"]
+        self.recipe_id = data["recipe_id"]

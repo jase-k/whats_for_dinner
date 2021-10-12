@@ -99,7 +99,7 @@
         {% for ingredient in recipe.ingredients %}
         <tr>
             <td>{{ingredient.quantity}}</td>
-            <td>{{ingredient.quantity_type}}</td>
+            <td>{{ingredient.quantity_type.name}}</td>
             <td><a href="">{{ingredient.name}}</a></td>
             <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value={{ingredient.spoonacular_id}} ></td>
         </tr>

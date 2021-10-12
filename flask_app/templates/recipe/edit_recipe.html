@@ -129,8 +129,8 @@
                         <td>
                             <select name = 'quantity_type_id'>
                                 {% for type in quantity_types %}
-                                <option value = '{{type.id}} {{ingredient.quantity_type_id}}' 
-                                {% if ingredient.quantity_type_id == type.id %}
+                                <option value = '{{type.id}}' 
+                                {% if ingredient.quantity_type.id == type.id %}
                                 selected
                                 {% endif %}
                                 >{{type.name}}</option>

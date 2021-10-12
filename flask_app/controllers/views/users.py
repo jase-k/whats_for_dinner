@@ -11,7 +11,7 @@ def displayUserDashboard():
         return redirect('/')
     
     user = User.getUserById(session['user_id'])
-    meals = Meal.getUserFutureWeekMeals(session['user_id'])
+    meals = Meal.getUserFutureWeekMeals(user.menu.id)
 
 
     return render_template('main/dashboard.html', user = user, menu_meals = meals)

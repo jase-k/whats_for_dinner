@@ -53,9 +53,11 @@ def updateUser():
         'first_name' : request.form['first_name'],
         'last_name' : request.form['last_name'],
         'email' : request.form['email'],
+        'menu_id' : request.form['menu_id'],
+        'menu_name' : request.form['menu_name'],
         'profile_picture': request.files['profile_picture']
     }
-
+    print(data)
     User.updateUser(data)
     return redirect('/dashboard')
 

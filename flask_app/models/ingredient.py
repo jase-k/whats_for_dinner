@@ -17,7 +17,7 @@ class Ingredient:
         if 'quantity' in data:
             self.quantity = data['quantity']
         if 'quantity_type_id' in data:
-            self.quantity_type_id = data['quantity_type_id']
+            self.quantity_type = QuantityType.getQuantityTypeById(data['quantity_type_id'])
 
     def __str__(self) -> str:
         str = f"id: {self.id}, created_at: {self.created_at}, updated_at: {self.updated_at}, name: {self.name}, allergy_id: {self.allergy_id}, spoonacular_id: {self.spoonacular_id}"
@@ -127,7 +127,19 @@ class QuantityType:
         return q_type
 
     @classmethod
-    def getQuantityTypes(cls) -> json:
+    def getQuantityTypes(cls) -> object:
+        query = "SELECT * FROM quantity_types"
+
+        db_data = MySQLConnection().query_db(query)
+
+        q_types = []
+        for row in db_data:
+            q_types.append(cls(row))
+        
+        return q_types
+
+    @classmethod
+    def getJSONQuantityTypes(cls) -> json:
         query = "SELECT * FROM quantity_types"
 
         db_data = MySQLConnection().query_db(query)
@@ -145,6 +157,6 @@ class QuantityType:
         db_data = MySQLConnection().query_db(query)
         
         if db_data:
-            return cls(db_data[0]).to_json()
+            return cls(db_data[0])
         else:
             return None

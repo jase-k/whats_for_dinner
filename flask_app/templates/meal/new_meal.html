@@ -6,6 +6,7 @@
 {% block content %}
 <h2>Add Meal to Menu!</h2>
 <form class="form-control">
+    <input type="hidden" name="menu_id" value="{{user.menu.id}}" id="menu_id">
     <div class="mb-3">
         <label for="date">Date:</label>
         <input type="date" name="date" id="date">
