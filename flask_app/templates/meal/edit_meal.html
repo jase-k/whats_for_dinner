@@ -7,6 +7,7 @@
 <h2>Edit Meal</h2>
 <form class="form-control">
     <input type="number" name="meal_id" value="{{meal.id}}" id="meal_id" hidden>
+    <input type="hidden" name='menu_id' value="{{meal.menu_id}}" id="menu_id">
     <div class="mb-3">
         <label for="date">Date:</label>
         <input type="date" name="date" id="date" value="{{meal.date}}">

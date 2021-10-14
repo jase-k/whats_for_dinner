@@ -75,6 +75,8 @@ class ProfileImage(Image):
 
     @staticmethod
     def insertImageToDB(user_id, file):
+        if file.filename == '':
+            return False
     
         #Get last id of image database
         query = "SELECT id FROM profile_images ORDER BY id DESC LIMIT 1"
@@ -116,9 +118,8 @@ class ProfileImage(Image):
         query = f"SELECT * from profile_images WHERE id = {id}"
         
         db_data = MySQLConnection().query_db(query)
-        print("Data from user DB", len(db_data))
 
-        if len(db_data) > 0:
+        if db_data:
             image = cls(db_data[0])
             return image
         else: 
@@ -163,6 +164,8 @@ class RecipeImage(Image):
 
     @staticmethod
     def insertImageToDB(user_id, recipe_id, file):
+        if file.filename == '':
+            return False
         #Get last id of image database
         query = "SELECT id FROM recipe_images ORDER BY id DESC LIMIT 1"
         last_image_id = MySQLConnection().query_db(query)

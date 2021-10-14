@@ -98,8 +98,6 @@ class Meal:
         query = f"UPDATE meals SET date = '{meal['date']}', meal_type_id = {meal['meal_type_id']} WHERE id = {meal['meal_id']}"
         MySQLConnection().query_db(query)
 
-        cls.deleteRecipesFromMeal(meal["meal_id"])
-
         for recipe in meal['recipes']:
             cls.connectRecipeToMeal(meal['meal_id'], recipe['id'])
         
