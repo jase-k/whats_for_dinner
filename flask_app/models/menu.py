@@ -21,13 +21,13 @@ class Menu:
     @classmethod
     def getMenuById(cls, id = None):
         if not id:
-            return {}
+            return None
         query = f"SELECT * FROM menus WHERE id = {id}"
         db_data = MySQLConnection().query_db(query)
         if db_data: 
             return cls(db_data[0])
         else:
-            return {}
+            return None
     
     @staticmethod
     def updateMenu(id, menu_name) -> None:

@@ -127,7 +127,7 @@
                     <tr>
                         <td><input name = 'quantity' class = 'quantity' type='float'value='{{ingredient.quantity}}'></td>
                         <td>
-                            <select name = 'quantity_type_id'>
+                            <select name = 'quantity_type_ids'>
                                 {% for type in quantity_types %}
                                 <option value = '{{type.id}}' 
                                 {% if ingredient.quantity_type.id == type.id %}
@@ -139,7 +139,7 @@
                         </td>
                         <td><input type="text" value="{{ingredient.name}}" class='readonly' name='ingredient_list' readonly></td>
                         <td><button class='remove_ingredient btn-danger' type="button">remove</button></td>
-                        <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value={{ingredient.spoonacular_id}} ></td>
+                        <td class='hidden'><input type='text' name='spoonacular_id' class='hidden' value="{{ingredient.spoonacular_id}}" ></td>
                     </tr>
                     {% endfor %}
                 </tbody>

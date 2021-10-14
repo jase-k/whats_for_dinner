@@ -71,13 +71,13 @@ class Recipe(ABC):
                 Cuisine.addCuisineToRecipe(recipe_id, cuisine)
 
             for x in range(len(data['ingredients'])):
-                ingredient_id = Ingredient.findIngredientElseAdd(data['ingredients'][x])
+                ingredient_id = Ingredient.findIngredientElseAdd(data['ingredients'][x], data['spoonacular_id'][x])
         
                 details = {
                     'recipe_id' : recipe_id,
                     'ingredient_id' : ingredient_id,
                     'quantity' : data['quantity'][x],
-                    'quantity_type' : data['quantity_type'][x]
+                    'quantity_type_id' : data['quantity_type_ids'][x]
                 }
                     
                 Ingredient.addIngredientToRecipe(details)

@@ -39,7 +39,9 @@ Change quantity_type to a seperate table so it can be referred by id
 Change View_recipe.html to generate the name of the quantity instead of id
 Change users_meals to menus_meals to support more than one user having the same meals
 *fix profile photo preference bug
+Fix spoonacular id going to 0
 -> 
+combine wet and dry ingredients
 *Keep Track of what you've gotten and what you need*
 *Add Your Own items to Shopping List*
 Add Optional Ingredients

@@ -26,7 +26,7 @@ def searchSpoonacularDatabase():
 
 @app.route('/ingredients/quantity_types')
 def getJSONQuantityTypes() -> json:
-    types = QuantityType.getQuantityTypes()
+    types = QuantityType.getJSONQuantityTypes()
     return json.dumps(types)
 
 

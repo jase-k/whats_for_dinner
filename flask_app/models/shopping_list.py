@@ -29,13 +29,11 @@ class ShoppingList:
         #clearList determines whether items in the shopping list should be deleted before adding to the list
         #returns JavaScript
         user = User.getUserById(user_id, False)
-        if not user.shopping_list_id:
-            user.shopping_list_id = cls.addNewShoppingToDB()
-            #####SHOULD UPDATE TO MENU -> MENU AUTO IS CONNECTED TO THE SHOPPING LIST
+        if not user.menu.id:
+            flash("No Menu Created. Please Create one in Preferences. ", "menu")
 
 
-
-        ingredientList = cls.getIngredientList(user_id, startdate, enddate)
+        ingredientList = cls.getIngredientList(user.menu.id, startdate, enddate)
         ingredientList = cls.consolodateIngredientList(ingredientList)
         #consolodate ingredients
         # cls.addItems(listOfIngredients)
@@ -69,9 +67,9 @@ class ShoppingList:
         return listOfIngredients
 
     @staticmethod
-    def getIngredientList(user_id, startdate, enddate):
+    def getIngredientList(menu_id, startdate, enddate):
         ingredientList = []
-        query = f"SELECT * FROM ingredients LEFT JOIN recipes_ingredients ON ingredients.id = recipes_ingredients.ingredient_id LEFT JOIN recipes ON recipes.id = recipes_ingredients.recipe_id LEFT JOIN meals_recipes ON meals_recipes.recipe_id = recipes.id LEFT JOIN meals ON meals.id = meals_recipes.meal_id JOIN users_meals ON users_meals.meal_id = meals.id LEFT JOIN users ON users.id = users_meals.user_id WHERE users.id = {user_id} AND meals.date > '{startdate}' AND meals.date < '{enddate}' ORDER BY ingredients.name ASC, recipes_ingredients.quantity_type ASC"
+        query = f"SELECT * FROM ingredients LEFT JOIN recipes_ingredients ON ingredients.id = recipes_ingredients.ingredient_id Left Join quantity_types ON quantity_types.id = recipes_ingredients.quantity_type_id LEFT JOIN recipes ON recipes.id = recipes_ingredients.recipe_id LEFT JOIN meals_recipes ON meals_recipes.recipe_id = recipes.id LEFT JOIN meals ON meals.id = meals_recipes.meal_id LEFT JOIN menus ON menus.id = meals.menu_id WHERE menus.id = {menu_id} AND meals.date > '{startdate}' AND meals.date < '{enddate}' ORDER BY ingredients.name ASC, recipes_ingredients.quantity_type_id ASC"
 
         db_data = MySQLConnection().query_db(query)
         print(db_data)
@@ -85,7 +83,7 @@ class ShoppingList:
                 "id" : row["id"],
                 "name" : row["name"],
                 "total" : row['quantity'],
-                "quantity_type" : row['quantity_type'],
+                "quantity_type" : QuantityType.getQuantityTypeById(row["quantity_type_id"]).to_json(),
                 "meals" : [ {
                     "id": row['meals.id'],
                     "date" : row['date'],
@@ -94,7 +92,7 @@ class ShoppingList:
                         "id" : row['recipes.id'],
                         "title" : row['title'],
                         "quantity" : row['quantity'],
-                        "quantity_type" : row['quantity_type'],
+                        "quantity_type" : QuantityType.getQuantityTypeById(row["quantity_type_id"]).to_json(),
                     } ]
                 }
                 ]
@@ -107,13 +105,6 @@ class ShoppingList:
         #Create a new table f
         pass
 
-
-    @staticmethod
-    def addNewShoppingToDB() -> int:
-        query = "INSERT INTO shopping_lists (created_at, updated_at) VALUES(NOW(), NOW())"
-        shopping_list_id = MySQLConnection().query_db(query)
-        return shopping_list_id
-    
     @staticmethod
     def addUserToShoppingList(user_id, list_id) -> None:
         query = f"UPDATE users SET shopping_list_id = {list_id} WHERE id = {user_id}"

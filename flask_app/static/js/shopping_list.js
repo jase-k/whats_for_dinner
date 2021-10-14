@@ -43,9 +43,9 @@ async function showList(){
 
         table.innerHTML += `
         <tr>
-            <td><input type="checkbox" name="ingredients" id="${ing_list[i].name}_${ing_list[i].quantity_type}"></td>
-            <td>${ing_list[i].total} ${ing_list[i].quantity_type}</td>
-            <td><label for="${ing_list[i].name}_${ing_list[i].quantity_type}" >${ing_list[i].name}</label></td>
+            <td><input type="checkbox" name="ingredients" id="${ing_list[i].name}_${ing_list[i].quantity_type.name}"></td>
+            <td>${ing_list[i].total} ${ing_list[i].quantity_type.name}</td>
+            <td><label for="${ing_list[i].name}_${ing_list[i].quantity_type.name}" >${ing_list[i].name}</label></td>
             <td class="subs">Substitutions</td>
             <td class="for_recipe">For Recipe: <br> ${recipeHtmlString} </td>
         </tr>
